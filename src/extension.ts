@@ -17,6 +17,10 @@ import { compile } from "./parser/index";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: ExtensionContext) {
+  console.log("npm import package version active!");
+  const ch = window.createOutputChannel("npm package version");
+  ch.append("npm import package version active!");
+  ch.show();
   const decorationType = window.createTextEditorDecorationType({
     overviewRulerColor: "blue",
     overviewRulerLane: OverviewRulerLane.Right,
