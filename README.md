@@ -11,6 +11,8 @@ An extension to show npm package's version in you code.
 
 ## Screen shot
 
+![Screen shot](https://github.com/axetroy/vscode-gpm/raw/master/screenshot.png)
+
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
