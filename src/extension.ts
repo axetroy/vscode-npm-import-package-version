@@ -54,7 +54,7 @@ export async function activate(context: ExtensionContext) {
   );
 
   const updateDecorators = debounce((editor: TextEditor) => {
-    if (!editor || !activeLanguages[editor.document.languageId]) {
+    if (!editor || !activeLanguages[editor.document.languageId.toLowerCase()]) {
       return;
     }
 
