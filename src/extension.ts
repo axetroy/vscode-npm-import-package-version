@@ -17,6 +17,7 @@ import { compile } from "./parser/index";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: ExtensionContext) {
+  window.showInformationMessage("npm package version active!");
   console.log("npm import package version active!");
   const ch = window.createOutputChannel("npm package version");
   ch.append("npm import package version active!");
@@ -36,26 +37,18 @@ export async function activate(context: ExtensionContext) {
     typescriptreact: true
   };
 
-  workspace.onDidChangeTextDocument(
-    event => {
-      if (activeEditor && event.document === activeEditor.document) {
-        updateDecorators(activeEditor);
-      }
-    },
-    null,
-    context.subscriptions
-  );
+  workspace.onDidChangeTextDocument(event => {
+    if (activeEditor && event.document === activeEditor.document) {
+      updateDecorators(activeEditor);
+    }
+  });
 
-  window.onDidChangeActiveTextEditor(
-    editor => {
-      activeEditor = editor;
-      if (editor) {
-        updateDecorators(editor);
-      }
-    },
-    null,
-    context.subscriptions
-  );
+  window.onDidChangeActiveTextEditor(editor => {
+    activeEditor = editor;
+    if (editor) {
+      updateDecorators(editor);
+    }
+  });
 
   const updateDecorators = debounce((editor: TextEditor) => {
     if (!editor || !activeLanguages[editor.document.languageId.toLowerCase()]) {
