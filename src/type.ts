@@ -4,11 +4,6 @@ export interface IPackage {
   version?: string;
 }
 
-export interface IPoint {
-  line: number;
-  column: number;
-}
-
 export interface ILocation {
   start: number;
   end: number;

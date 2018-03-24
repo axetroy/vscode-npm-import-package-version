@@ -5,7 +5,6 @@ import {
   workspace,
   window,
   Range,
-  Position,
   OverviewRulerLane,
   ExtensionContext,
   TextEditor

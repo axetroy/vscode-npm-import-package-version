@@ -2,7 +2,6 @@ import * as ts from "typescript";
 
 import { IMark } from "../type";
 import { createMark, isValidNpmPackageName } from "../utils";
-import { Location } from "vscode";
 
 export function compile(code: string, filepath: string): IMark[] | void {
   const marks: IMark[] = [];

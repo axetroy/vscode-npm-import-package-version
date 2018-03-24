@@ -4,7 +4,6 @@ import {
   isIdentifier,
   isStringLiteral
 } from "babel-types";
-import { transform } from "babel-core";
 import { isValidNpmPackageName, createMark } from "../utils";
 import { IMark } from "../type";
 import { parse } from "babylon";
