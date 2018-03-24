@@ -26,6 +26,13 @@ export async function activate(context: ExtensionContext) {
 
   let activeEditor = window.activeTextEditor;
 
+  const activeLanguages: any = {
+    javascript: true,
+    javascriptreact: true,
+    typescript: true,
+    typescriptreact: true
+  };
+
   workspace.onDidChangeTextDocument(
     event => {
       if (activeEditor && event.document === activeEditor.document) {
@@ -48,9 +55,10 @@ export async function activate(context: ExtensionContext) {
   );
 
   const updateDecorators = debounce((editor: TextEditor) => {
-    if (!editor) {
+    if (!editor || !activeLanguages[editor.document.languageId]) {
       return;
     }
+
     const document = editor.document;
 
     const marks = compile(document.getText(), document.fileName);
