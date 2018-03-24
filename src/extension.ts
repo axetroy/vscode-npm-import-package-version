@@ -16,7 +16,7 @@ import { compile } from "./parser/index";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export async function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext) {
   window.showInformationMessage("npm package version active!");
   console.log("npm import package version active!");
   const ch = window.createOutputChannel("npm package version");
@@ -88,6 +88,6 @@ export async function activate(context: ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export async function deactivate(context: ExtensionContext) {
+export function deactivate(context: ExtensionContext) {
   //
 }
