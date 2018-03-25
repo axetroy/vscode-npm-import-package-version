@@ -18,9 +18,8 @@ import { compile } from "./parser/index";
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
   const decorationType = window.createTextEditorDecorationType({
-    overviewRulerColor: "blue",
     overviewRulerLane: OverviewRulerLane.Right,
-    after: { margin: "0 0 0 0.5rem" }
+    after: { margin: "0 0 0 0rem" }
   });
 
   let activeEditor = window.activeTextEditor;
@@ -68,7 +67,7 @@ export function activate(context: ExtensionContext) {
           ),
           renderOptions: {
             after: {
-              contentText: `v${version}`,
+              contentText: `@${version}`,
               color: "#9e9e9e"
             }
           }

@@ -49,7 +49,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
         if (isStringLiteral(argv) && isValidNpmPackageName(argv.value)) {
           const mark = createMark(argv.value, filepath, {
             start: argv.start,
-            end: argv.end
+            end: argv.end - 1
           });
           if (mark) {
             marks.push(mark);
@@ -65,7 +65,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
       ) {
         const mark = createMark(node.source.value, filepath, {
           start: node.source.start,
-          end: node.source.end
+          end: node.source.end - 1
         });
         if (mark) {
           marks.push(mark);

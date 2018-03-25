@@ -29,10 +29,14 @@ export function compile(code: string, filepath: string): IMark[] | void {
           const argvs = (node as ts.CallExpression).arguments;
           if (ts.isIdentifier(expression) && expression.text === "require") {
             const argv = argvs[0] as ts.StringLiteral;
-            if (ts.isStringLiteral(argv) && isValidNpmPackageName(argv.text)) {
+            if (
+              argv &&
+              ts.isStringLiteral(argv) &&
+              isValidNpmPackageName(argv.text)
+            ) {
               const mark = createMark(argv.text, filepath, {
                 start: argv.pos,
-                end: argv.end
+                end: argv.end - 1
               });
 
               if (mark) {
@@ -43,10 +47,14 @@ export function compile(code: string, filepath: string): IMark[] | void {
           break;
         case ts.SyntaxKind.ImportDeclaration:
           const spec = (node as ts.ImportDeclaration).moduleSpecifier;
-          if (ts.isStringLiteral(spec) && isValidNpmPackageName(spec.text)) {
+          if (
+            spec &&
+            ts.isStringLiteral(spec) &&
+            isValidNpmPackageName(spec.text)
+          ) {
             const mark = createMark(spec.text, filepath, {
               start: spec.pos,
-              end: spec.end
+              end: spec.end - 1
             });
 
             if (mark) {

@@ -29,7 +29,10 @@
   "icon": "resources/icon.png",
   "main": "./out/extension",
   "activationEvents": [
-    "*"
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
   ],
   "contributes": {},
   "scripts": {
