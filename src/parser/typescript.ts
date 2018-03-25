@@ -31,8 +31,8 @@ export function compile(code: string, filepath: string): IMark[] | void {
             const argv = argvs[0] as ts.StringLiteral;
             if (ts.isStringLiteral(argv) && isValidNpmPackageName(argv.text)) {
               const mark = createMark(argv.text, filepath, {
-                start: node.pos - 1,
-                end: node.end - 1
+                start: argv.pos,
+                end: argv.end
               });
 
               if (mark) {
@@ -45,8 +45,8 @@ export function compile(code: string, filepath: string): IMark[] | void {
           const spec = (node as ts.ImportDeclaration).moduleSpecifier;
           if (ts.isStringLiteral(spec) && isValidNpmPackageName(spec.text)) {
             const mark = createMark(spec.text, filepath, {
-              start: node.pos - 1,
-              end: node.end - 1
+              start: spec.pos,
+              end: spec.end
             });
 
             if (mark) {
