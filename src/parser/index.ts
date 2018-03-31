@@ -15,6 +15,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
   switch (path.extname(filepath)) {
     case ".js":
     case ".jsx":
+    case ".mjs":
       return JavascriptCompiler(code, filepath);
     case ".ts":
     case ".tsx":
