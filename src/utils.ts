@@ -63,8 +63,7 @@ export function findPackage(packageName: string, cwd: string): string | void {
 }
 
 export function isValidNpmPackageName(name: string): boolean {
-  const first = name.charAt(0);
-  return !!first && first !== "." && first !== "/";
+  return /^(@[a-z]([\w\-_]+)?\/)?[a-z]([\w\-_\.]+)?$/i.test(name);
 }
 
 export function createMark(
@@ -84,6 +83,7 @@ export function createMark(
       };
     } else {
       const packageInfo: IPackage = packageNameParser(sourceName);
+
       const packagePath = findPackage(packageInfo.name, filepath);
       if (!packagePath) {
         return {
