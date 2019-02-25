@@ -11,8 +11,10 @@ import {
 } from "vscode";
 
 const debounce = require("lodash.debounce");
+import * as fs from "fs-extra";
 
 import { compile } from "./parser/index";
+import { IMark } from "./type";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -32,7 +34,7 @@ export function activate(context: ExtensionContext) {
     vue: true
   };
 
-  const updateDecorators = debounce((editor: TextEditor) => {
+  const updateDecorators = debounce(async (editor: TextEditor) => {
     if (!editor || !activeLanguages[editor.document.languageId.toLowerCase()]) {
       return;
     }
@@ -44,7 +46,21 @@ export function activate(context: ExtensionContext) {
       return;
     }
 
-    const marks = compile(document.getText(), document.fileName);
+    let marks: IMark[] | void = [];
+
+    try {
+      const stat = await fs.stat(document.fileName);
+      // do not parse file which over 1M
+      if (stat.size > 1024 * 1024 * 1) {
+        window.showWarningMessage(
+          "This file too large. will not show import version"
+        );
+        return;
+      }
+      marks = compile(document.getText(), document.fileName);
+    } catch (err) {
+      //
+    }
 
     if (!marks || !marks.length) {
       return;

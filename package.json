@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@types/babel-core": "^6.25.6",
+    "@types/fs-extra": "^5.0.5",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.9.5",
     "conventional-changelog-cli": "^2.0.12",
@@ -58,6 +59,7 @@
     "@vue/component-compiler-utils": "^2.6.0",
     "babel-types": "^6.26.0",
     "babylon": "^6.18.0",
+    "fs-extra": "^7.0.1",
     "lodash.debounce": "^4.0.8",
     "parse-package-name": "^0.1.0",
     "typescript": "^3.3.3333",
