@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.2.1...v0.2.2) (2019-02-25)
+
+
+### Bug Fixes
+
+* the problem that the decorator will not be emptied in some cases. ([277955a](https://github.com/axetroy/vscode-npm-import-package-version/commit/277955a))
+
+
+
 ## [0.2.1](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.2.0...v0.2.1) (2019-02-25)
 
 
