@@ -6,6 +6,7 @@ An extension to show npm package's version in you code.
 
 * [x] Javascript
 * [x] Typescript
+* [x] Vue
 
 ## [CHANGELOG](https://github.com/axetroy/vscode-npm-import-package-version/blob/master/CHANGELOG.md)
 
