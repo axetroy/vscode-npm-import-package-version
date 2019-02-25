@@ -28,7 +28,8 @@ export function activate(context: ExtensionContext) {
     javascript: true,
     javascriptreact: true,
     typescript: true,
-    typescriptreact: true
+    typescriptreact: true,
+    vue: true
   };
 
   workspace.onDidChangeTextDocument(event => {
@@ -53,7 +54,7 @@ export function activate(context: ExtensionContext) {
 
     const marks = compile(document.getText(), document.fileName);
 
-    if (!marks) {
+    if (!marks || !marks.length) {
       return;
     }
 

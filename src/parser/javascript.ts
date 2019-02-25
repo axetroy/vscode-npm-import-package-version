@@ -36,21 +36,25 @@ export function compile(code: string, filepath: string): IMark[] | void {
 
   const visitor: any = {
     CallExpression(p: any) {
-      console.log(p);
       const node: CallExpression = p.node;
       if (isIdentifier(node.callee) && node.callee.name === "require") {
-        const argvs = node.arguments;
-        if (argvs.length > 1) {
+        const args = node.arguments;
+        if (args.length > 1) {
           return;
         }
 
-        const argv = argvs[0];
+        const argv = args[0];
 
         if (isStringLiteral(argv) && isValidNpmPackageName(argv.value)) {
-          const mark = createMark(argv.value, filepath, {
-            start: argv.start,
-            end: argv.end - 1
-          });
+          const mark = createMark(
+            argv.value,
+            filepath,
+            {
+              start: argv.start,
+              end: argv.end - 1
+            },
+            "require"
+          );
           if (mark) {
             marks.push(mark);
           }
@@ -63,10 +67,15 @@ export function compile(code: string, filepath: string): IMark[] | void {
         isStringLiteral(node.source) &&
         isValidNpmPackageName(node.source.value)
       ) {
-        const mark = createMark(node.source.value, filepath, {
-          start: node.source.start,
-          end: node.source.end - 1
-        });
+        const mark = createMark(
+          node.source.value,
+          filepath,
+          {
+            start: node.source.start,
+            end: node.source.end - 1
+          },
+          "import"
+        );
         if (mark) {
           marks.push(mark);
         }

@@ -13,4 +13,6 @@ export interface IMark {
   location: ILocation;
   name: string;
   version: string;
+  buildIn: boolean;
+  method: "require" | "import";
 }

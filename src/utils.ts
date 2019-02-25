@@ -70,14 +70,17 @@ export function isValidNpmPackageName(name: string): boolean {
 export function createMark(
   sourceName: string,
   filepath: string,
-  location: ILocation
+  location: ILocation,
+  method: "require" | "import"
 ): IMark | void {
   try {
     if (isBuildInModule(sourceName)) {
       return {
         location,
         name: sourceName,
-        version: getCurrentUsingNodeVersion()
+        version: getCurrentUsingNodeVersion(),
+        buildIn: true,
+        method
       };
     } else {
       const packageInfo: IPackage = packageNameParser(sourceName);
@@ -89,7 +92,9 @@ export function createMark(
       return {
         location,
         name: packageInfo.name,
-        version: pkg.version
+        version: pkg.version,
+        buildIn: false,
+        method
       };
     }
   } catch (err) {

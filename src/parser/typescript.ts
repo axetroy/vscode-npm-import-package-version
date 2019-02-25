@@ -26,18 +26,23 @@ export function compile(code: string, filepath: string): IMark[] | void {
       switch (node.kind) {
         case ts.SyntaxKind.CallExpression:
           const expression = (node as ts.CallExpression).expression;
-          const argvs = (node as ts.CallExpression).arguments;
+          const args = (node as ts.CallExpression).arguments;
           if (ts.isIdentifier(expression) && expression.text === "require") {
-            const argv = argvs[0] as ts.StringLiteral;
+            const argv = args[0] as ts.StringLiteral;
             if (
               argv &&
               ts.isStringLiteral(argv) &&
               isValidNpmPackageName(argv.text)
             ) {
-              const mark = createMark(argv.text, filepath, {
-                start: argv.pos,
-                end: argv.end - 1
-              });
+              const mark = createMark(
+                argv.text,
+                filepath,
+                {
+                  start: argv.pos,
+                  end: argv.end - 1
+                },
+                "require"
+              );
 
               if (mark) {
                 marks.push(mark);
@@ -52,10 +57,15 @@ export function compile(code: string, filepath: string): IMark[] | void {
             ts.isStringLiteral(spec) &&
             isValidNpmPackageName(spec.text)
           ) {
-            const mark = createMark(spec.text, filepath, {
-              start: spec.pos,
-              end: spec.end - 1
-            });
+            const mark = createMark(
+              spec.text,
+              filepath,
+              {
+                start: spec.pos,
+                end: spec.end - 1
+              },
+              "import"
+            );
 
             if (mark) {
               marks.push(mark);
