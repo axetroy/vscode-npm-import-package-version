@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.2.0...v0.2.1) (2019-02-25)
+
+
+### Bug Fixes
+
+* Determine if it is a valid npm package name ([f7b6264](https://github.com/axetroy/vscode-npm-import-package-version/commit/f7b6264))
+
+
+
 # [0.2.0](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.1.8...v0.2.0) (2019-02-25)
 
 
