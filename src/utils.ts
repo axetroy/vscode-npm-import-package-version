@@ -86,7 +86,13 @@ export function createMark(
       const packageInfo: IPackage = packageNameParser(sourceName);
       const packagePath = findPackage(packageInfo.name, filepath);
       if (!packagePath) {
-        return;
+        return {
+          location,
+          name: packageInfo.name,
+          version: "Not Installed",
+          buildIn: false,
+          method
+        };
       }
       const pkg = require(path.join(packagePath, "package.json"));
       return {
