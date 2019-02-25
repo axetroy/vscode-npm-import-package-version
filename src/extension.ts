@@ -75,7 +75,7 @@ export function activate(context: ExtensionContext) {
         };
       })
     );
-  }, 200);
+  }, 500);
 
   if (activeEditor) {
     updateDecorators(activeEditor);
