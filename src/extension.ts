@@ -32,25 +32,17 @@ export function activate(context: ExtensionContext) {
     vue: true
   };
 
-  workspace.onDidChangeTextDocument(event => {
-    if (activeEditor && event.document === activeEditor.document) {
-      updateDecorators(activeEditor);
-    }
-  });
-
-  window.onDidChangeActiveTextEditor(editor => {
-    activeEditor = editor;
-    if (editor) {
-      updateDecorators(editor);
-    }
-  });
-
   const updateDecorators = debounce((editor: TextEditor) => {
     if (!editor || !activeLanguages[editor.document.languageId.toLowerCase()]) {
       return;
     }
 
     const document = editor.document;
+
+    // do not parse min file
+    if (/\min\.js%/.test(document.fileName)) {
+      return;
+    }
 
     const marks = compile(document.getText(), document.fileName);
 
@@ -76,6 +68,19 @@ export function activate(context: ExtensionContext) {
       })
     );
   }, 500);
+
+  workspace.onDidChangeTextDocument(event => {
+    if (activeEditor && event.document === activeEditor.document) {
+      updateDecorators(activeEditor);
+    }
+  });
+
+  window.onDidChangeActiveTextEditor(editor => {
+    activeEditor = editor;
+    if (editor) {
+      updateDecorators(editor);
+    }
+  });
 
   if (activeEditor) {
     updateDecorators(activeEditor);
