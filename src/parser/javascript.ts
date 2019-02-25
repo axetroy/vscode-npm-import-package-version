@@ -9,7 +9,7 @@ import { IMark } from "../type";
 import { parse } from "babylon";
 const traverse = require("@babel/traverse").default;
 
-export function compile(code: string, filepath: string): IMark[] | void {
+export function compile(code: string, filepath: string): IMark[] {
   const marks: IMark[] = [];
   let ast;
   try {
@@ -31,7 +31,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
       ]
     });
   } catch (err) {
-    return void 0;
+    return []
   }
 
   const visitor: any = {

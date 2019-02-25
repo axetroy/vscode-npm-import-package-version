@@ -3,7 +3,7 @@ import * as ts from "typescript";
 import { IMark } from "../type";
 import { createMark, isValidNpmPackageName } from "../utils";
 
-export function compile(code: string, filepath: string): IMark[] | void {
+export function compile(code: string, filepath: string): IMark[] {
   const marks: IMark[] = [];
   let sourceFile;
   try {
@@ -16,7 +16,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
       ts.ScriptKind.TSX
     );
   } catch (err) {
-    return void 0;
+    return [];
   }
 
   function delint(SourceFile: ts.SourceFile) {

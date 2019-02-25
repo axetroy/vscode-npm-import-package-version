@@ -3,7 +3,7 @@ import { IMark } from "../type";
 import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 
-export function compile(code: string, filepath: string): IMark[] | void {
+export function compile(code: string, filepath: string): IMark[] {
   const output = parse({
     source: code,
     filename: filepath,
@@ -13,7 +13,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
   const script = output.script;
 
   if (!script) {
-    return;
+    return [];
   }
 
   const lang = script.lang;
@@ -58,7 +58,7 @@ export function compile(code: string, filepath: string): IMark[] | void {
 
   const content = contentArr.join("\n");
 
-  let marks: IMark[] | void = [];
+  let marks: IMark[] = [];
 
   switch (lang) {
     case "typescript":
@@ -68,10 +68,6 @@ export function compile(code: string, filepath: string): IMark[] | void {
     default:
       // default is javascript
       marks = JavascriptCompiler(content, filepath);
-  }
-
-  if (!marks) {
-    return;
   }
 
   return marks.map(v => {

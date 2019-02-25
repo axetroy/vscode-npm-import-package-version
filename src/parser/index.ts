@@ -12,7 +12,7 @@ import { IMark } from "../type";
  * @param {string} filepath
  * @returns
  */
-export function compile(code: string, filepath: string): IMark[] | void {
+export function compile(code: string, filepath: string): IMark[] {
   switch (path.extname(filepath)) {
     case ".js":
     case ".jsx":

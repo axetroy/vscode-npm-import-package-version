@@ -46,24 +46,20 @@ export function activate(context: ExtensionContext) {
       return;
     }
 
-    let marks: IMark[] | void = [];
+    let marks: IMark[] = [];
 
     try {
       const stat = await fs.stat(document.fileName);
       // do not parse file which over 1M
       if (stat.size > 1024 * 1024 * 1) {
         window.showWarningMessage(
-          "This file too large. will not show import version"
+          "This file too large. will not show import version!"
         );
         return;
       }
       marks = compile(document.getText(), document.fileName);
     } catch (err) {
       //
-    }
-
-    if (!marks || !marks.length) {
-      return;
     }
 
     editor.setDecorations(
