@@ -66,7 +66,7 @@ export function compile(code: string, filepath: string): IMark[] {
             filepath,
             {
               start: argv.start || 0,
-              end: argv.end || 0 - 1
+              end: (argv.end || 0) - 1
             },
             (callee as any).name
           );
@@ -78,16 +78,14 @@ export function compile(code: string, filepath: string): IMark[] {
     },
     ImportDeclaration(p: any) {
       const node: ImportDeclaration = p.node;
-      if (
-        isStringLiteral(node.source) &&
-        isValidNpmPackageName(node.source.value)
-      ) {
+      const argv = node.source;
+      if (isStringLiteral(argv) && isValidNpmPackageName(argv.value)) {
         const mark = createMark(
-          node.source.value,
+          argv.value,
           filepath,
           {
-            start: node.source.start || 0,
-            end: node.source.end || 0 - 1
+            start: argv.start || 0,
+            end: (argv.end || 0) - 1
           },
           "import"
         );
