@@ -2,43 +2,58 @@ import {
   CallExpression,
   ImportDeclaration,
   isIdentifier,
-  isStringLiteral
-} from "babel-types";
+  isStringLiteral,
+  isImport,
+  StringLiteral
+} from "@babel/types";
 import { isValidNpmPackageName, createMark } from "../utils";
 import { IMark } from "../type";
-import { parse } from "babylon";
+import * as parser from "@babel/parser";
 const traverse = require("@babel/traverse").default;
 
 export function compile(code: string, filepath: string): IMark[] {
   const marks: IMark[] = [];
   let ast;
   try {
-    ast = parse(code, {
+    ast = parser.parse(code, {
       sourceType: "module",
       plugins: [
         "jsx",
         "flow",
-        "classConstructorCall",
+        "flowComments",
         "doExpressions",
         "objectRestSpread",
-        "decorators",
+        "decorators-legacy",
         "classProperties",
-        "exportExtensions",
+        "classPrivateProperties",
+        "classPrivateMethods",
+        "exportDefaultFrom",
+        "exportNamespaceFrom",
         "asyncGenerators",
         "functionBind",
         "functionSent",
-        "dynamicImport"
+        "dynamicImport",
+        "numericSeparator",
+        "optionalChaining",
+        "importMeta",
+        "bigInt",
+        "optionalCatchBinding",
+        "throwExpressions",
+        "nullishCoalescingOperator"
       ]
     });
   } catch (err) {
-    return []
+    return [];
   }
 
   const visitor: any = {
     CallExpression(p: any) {
       const node: CallExpression = p.node;
-      if (isIdentifier(node.callee) && node.callee.name === "require") {
-        const args = node.arguments;
+      const callee = node.callee;
+      const isRequire = isIdentifier(callee) && callee.name === "require";
+      const isDynamicImport = isImport(callee);
+      if (isRequire || isDynamicImport) {
+        const args = node.arguments as StringLiteral[];
         if (args.length > 1) {
           return;
         }
@@ -50,10 +65,10 @@ export function compile(code: string, filepath: string): IMark[] {
             argv.value,
             filepath,
             {
-              start: argv.start,
-              end: argv.end - 1
+              start: argv.start || 0,
+              end: argv.end || 0 - 1
             },
-            "require"
+            (callee as any).name
           );
           if (mark) {
             marks.push(mark);
@@ -71,8 +86,8 @@ export function compile(code: string, filepath: string): IMark[] {
           node.source.value,
           filepath,
           {
-            start: node.source.start,
-            end: node.source.end - 1
+            start: node.source.start || 0,
+            end: node.source.end || 0 - 1
           },
           "import"
         );

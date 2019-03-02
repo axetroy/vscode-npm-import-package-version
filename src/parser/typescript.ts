@@ -27,7 +27,11 @@ export function compile(code: string, filepath: string): IMark[] {
         case ts.SyntaxKind.CallExpression:
           const expression = (node as ts.CallExpression).expression;
           const args = (node as ts.CallExpression).arguments;
-          if (ts.isIdentifier(expression) && expression.text === "require") {
+          const isRequire =
+            ts.isIdentifier(expression) && expression.text === "require";
+          const isDynamicImport =
+            expression.kind === ts.SyntaxKind.ImportKeyword;
+          if (isRequire || isDynamicImport) {
             const argv = args[0] as ts.StringLiteral;
             if (
               argv &&
@@ -41,7 +45,7 @@ export function compile(code: string, filepath: string): IMark[] {
                   start: argv.pos,
                   end: argv.end - 1
                 },
-                "require"
+                isRequire ? "require" : "import"
               );
 
               if (mark) {
