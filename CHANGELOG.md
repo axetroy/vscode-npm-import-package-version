@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.3.0...v0.3.1) (2019-03-02)
+
+
+### Bug Fixes
+
+* bugs ([58eb058](https://github.com/axetroy/vscode-npm-import-package-version/commit/58eb058))
+
+
+
 # [0.3.0](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.2.2...v0.3.0) (2019-03-02)
 
 
