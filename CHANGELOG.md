@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.2.2...v0.3.0) (2019-03-02)
+
+
+### Features
+
+* support dynamic import() and upgrade babel@7. close [#7](https://github.com/axetroy/vscode-npm-import-package-version/issues/7), [#8](https://github.com/axetroy/vscode-npm-import-package-version/issues/8) ([7cbdf8a](https://github.com/axetroy/vscode-npm-import-package-version/commit/7cbdf8a))
+
+
+
 ## [0.2.2](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.2.1...v0.2.2) (2019-02-25)
 
 
