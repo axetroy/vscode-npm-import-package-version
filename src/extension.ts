@@ -11,10 +11,8 @@ import {
 } from "vscode";
 
 const debounce = require("lodash.debounce");
-import * as fs from "fs-extra";
 
 import { compile } from "./parser/index";
-import { IMark } from "./type";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -26,16 +24,8 @@ export function activate(context: ExtensionContext) {
 
   let activeEditor = window.activeTextEditor;
 
-  const activeLanguages: any = {
-    javascript: true,
-    javascriptreact: true,
-    typescript: true,
-    typescriptreact: true,
-    vue: true
-  };
-
   const updateDecorators = debounce(async (editor: TextEditor) => {
-    if (!editor || !activeLanguages[editor.document.languageId.toLowerCase()]) {
+    if (!editor) {
       return;
     }
 
@@ -46,33 +36,20 @@ export function activate(context: ExtensionContext) {
       return;
     }
 
-    let marks: IMark[] = [];
-
-    try {
-      const stat = await fs.stat(document.fileName);
-      // do not parse file which over 1M
-      if (stat.size > 1024 * 1024 * 1) {
-        window.showWarningMessage(
-          "This file too large. will not show import version!"
-        );
-        return;
-      }
-      marks = compile(document.getText(), document.fileName);
-    } catch (err) {
-      //
-    }
+    const marks = await compile(document);
 
     editor.setDecorations(
       decorationType,
-      marks.map(({ location, name, version }) => {
+      marks.map(v => {
         return {
           range: new Range(
-            editor.document.positionAt(location.start),
-            editor.document.positionAt(location.end)
+            editor.document.positionAt(v.location.start),
+            editor.document.positionAt(v.location.end)
           ),
+          // hoverMessage: `${v.name}:${v.version}`,
           renderOptions: {
             after: {
-              contentText: `@${version}`,
+              contentText: `@${v.version}`,
               color: "#9e9e9e"
             }
           }
