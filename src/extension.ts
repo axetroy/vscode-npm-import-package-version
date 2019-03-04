@@ -7,7 +7,8 @@ import {
   Range,
   OverviewRulerLane,
   ExtensionContext,
-  TextEditor
+  TextEditor,
+  DecorationOptions
 } from "vscode";
 
 const debounce = require("lodash.debounce");
@@ -46,7 +47,6 @@ export function activate(context: ExtensionContext) {
             editor.document.positionAt(v.location.start),
             editor.document.positionAt(v.location.end)
           ),
-          // hoverMessage: `${v.name}:${v.version}`,
           renderOptions: {
             after: {
               contentText: `@${v.version}`,
@@ -54,7 +54,7 @@ export function activate(context: ExtensionContext) {
             }
           }
         };
-      })
+      }) as DecorationOptions[]
     );
   }, 500);
 
