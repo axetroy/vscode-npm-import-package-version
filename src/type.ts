@@ -12,7 +12,7 @@ export interface ILocation {
 export interface IMark {
   location: ILocation;
   name: string;
-  version: string;
+  version: string | null;
   buildIn: boolean;
   method: "require" | "import";
 }

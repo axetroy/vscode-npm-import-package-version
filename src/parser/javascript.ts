@@ -1,17 +1,13 @@
-import {
-  CallExpression,
-  ImportDeclaration,
-  isIdentifier,
-  isStringLiteral,
-  isImport,
-  StringLiteral
-} from "@babel/types";
 import { isValidNpmPackageName, createMark } from "../utils";
 import { IMark } from "../type";
-import * as parser from "@babel/parser";
-const traverse = require("@babel/traverse").default;
+import BabelParser = require("@babel/parser");
+import BabelTypes = require("@babel/types");
 
 export function compile(code: string, filepath: string): IMark[] {
+  const parser: typeof BabelParser = require("@babel/parser");
+  const babelTypes: typeof BabelTypes = require("@babel/types");
+  const traverse = require("@babel/traverse").default;
+
   const marks: IMark[] = [];
   let ast;
   try {
@@ -48,19 +44,23 @@ export function compile(code: string, filepath: string): IMark[] {
 
   const visitor: any = {
     CallExpression(p: any) {
-      const node: CallExpression = p.node;
+      const node: BabelTypes.CallExpression = p.node;
       const callee = node.callee;
-      const isRequire = isIdentifier(callee) && callee.name === "require";
-      const isDynamicImport = isImport(callee);
+      const isRequire =
+        babelTypes.isIdentifier(callee) && callee.name === "require";
+      const isDynamicImport = babelTypes.isImport(callee);
       if (isRequire || isDynamicImport) {
-        const args = node.arguments as StringLiteral[];
+        const args = node.arguments as BabelTypes.StringLiteral[];
         if (args.length > 1) {
           return;
         }
 
         const argv = args[0];
 
-        if (isStringLiteral(argv) && isValidNpmPackageName(argv.value)) {
+        if (
+          babelTypes.isStringLiteral(argv) &&
+          isValidNpmPackageName(argv.value)
+        ) {
           const mark = createMark(
             argv.value,
             filepath,
@@ -77,9 +77,12 @@ export function compile(code: string, filepath: string): IMark[] {
       }
     },
     ImportDeclaration(p: any) {
-      const node: ImportDeclaration = p.node;
+      const node: BabelTypes.ImportDeclaration = p.node;
       const argv = node.source;
-      if (isStringLiteral(argv) && isValidNpmPackageName(argv.value)) {
+      if (
+        babelTypes.isStringLiteral(argv) &&
+        isValidNpmPackageName(argv.value)
+      ) {
         const mark = createMark(
           argv.value,
           filepath,

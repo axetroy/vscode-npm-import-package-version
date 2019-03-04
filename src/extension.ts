@@ -1,23 +1,19 @@
 "use strict";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import {
-  workspace,
-  window,
-  Range,
-  OverviewRulerLane,
-  ExtensionContext,
-  TextEditor,
-  DecorationOptions
-} from "vscode";
+import VSCODE = require("vscode");
 
-const debounce = require("lodash.debounce");
 import { SupportLanguagesMap } from "./type";
 import { compile } from "./parser/index";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: ExtensionContext) {
+export function activate(context: VSCODE.ExtensionContext) {
+  const vscode: typeof VSCODE = require("vscode");
+  const debounce = require("lodash.debounce");
+
+  const { workspace, window, Range, OverviewRulerLane } = vscode;
+
   const decorationType = window.createTextEditorDecorationType({
     overviewRulerLane: OverviewRulerLane.Right,
     after: { margin: "0 0 0 0rem" }
@@ -25,7 +21,7 @@ export function activate(context: ExtensionContext) {
 
   let activeEditor = window.activeTextEditor;
 
-  const updateDecorators = debounce(async (editor: TextEditor) => {
+  const updateDecorators = debounce(async (editor: VSCODE.TextEditor) => {
     if (!editor) {
       return;
     }
@@ -50,26 +46,30 @@ export function activate(context: ExtensionContext) {
         ),
         renderOptions: {
           after: {
-            contentText: `@${v.version}`,
+            contentText: `@${v.version || "Not Installed"}`,
             color: "#9e9e9e"
           }
         }
       };
-    }) as DecorationOptions[]);
+    }) as VSCODE.DecorationOptions[]);
   }, 500);
 
-  workspace.onDidChangeTextDocument(event => {
-    if (activeEditor && event.document === activeEditor.document) {
-      updateDecorators(activeEditor);
-    }
-  });
+  context.subscriptions.push(
+    workspace.onDidChangeTextDocument(event => {
+      if (activeEditor && event.document === activeEditor.document) {
+        updateDecorators(activeEditor);
+      }
+    })
+  );
 
-  window.onDidChangeActiveTextEditor(editor => {
-    activeEditor = editor;
-    if (editor) {
-      updateDecorators(editor);
-    }
-  });
+  context.subscriptions.push(
+    window.onDidChangeActiveTextEditor(editor => {
+      activeEditor = editor;
+      if (editor) {
+        updateDecorators(editor);
+      }
+    })
+  );
 
   if (activeEditor) {
     updateDecorators(activeEditor);
@@ -77,6 +77,6 @@ export function activate(context: ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate(context: ExtensionContext) {
+export function deactivate(context: VSCODE.ExtensionContext) {
   //
 }

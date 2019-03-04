@@ -1,7 +1,6 @@
-import * as fs from "fs";
 import * as path from "path";
 import { spawnSync } from "child_process";
-const packageNameParser = require("parse-package-name");
+import fsExtra = require("fs-extra");
 import { IPackage, ILocation, IMark } from "./type";
 
 const builtinModules: string[] = [
@@ -55,6 +54,7 @@ export function findPackage(packageName: string, cwd: string): string | void {
   }
   const packagePath: string = path.join(cwd, "node_modules", packageName);
   try {
+    const fs: typeof fsExtra = require("fs-extra");
     fs.readdirSync(packagePath);
     return packagePath;
   } catch (err) {
@@ -82,6 +82,7 @@ export function createMark(
         method
       };
     } else {
+      const packageNameParser = require("parse-package-name");
       const packageInfo: IPackage = packageNameParser(sourceName);
 
       const packagePath = findPackage(packageInfo.name, filepath);
@@ -89,7 +90,7 @@ export function createMark(
         return {
           location,
           name: packageInfo.name,
-          version: "Not Installed",
+          version: null,
           buildIn: false,
           method
         };

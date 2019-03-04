@@ -1,10 +1,11 @@
-import { parse } from "@vue/component-compiler-utils";
+import Vue = require("@vue/component-compiler-utils");
 import { IMark } from "../type";
 import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 
 export function compile(code: string, filepath: string): IMark[] {
-  const output = parse({
+  const parser: typeof Vue = require("@vue/component-compiler-utils");
+  const output = parser.parse({
     source: code,
     filename: filepath,
     compiler: require("vue-template-compiler")

@@ -1,5 +1,5 @@
-import * as fs from "fs-extra";
-import { TextDocument } from "vscode";
+import fsExtra = require("fs-extra");
+import vscode = require("vscode");
 import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 import { compile as VueCompiler } from "./vue";
@@ -10,7 +10,8 @@ import { IMark, SupportLanguages } from "../type";
  * compile the code and return marks
  * @param document
  */
-export async function compile(document: TextDocument): Promise<IMark[]> {
+export async function compile(document: vscode.TextDocument): Promise<IMark[]> {
+  const fs: typeof fsExtra = require("fs-extra");
   const filepath = document.fileName;
   const fileText = document.getText();
   // do not parse min file
