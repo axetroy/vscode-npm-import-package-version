@@ -12,7 +12,7 @@ import {
 } from "vscode";
 
 const debounce = require("lodash.debounce");
-
+import { SupportLanguagesMap } from "./type";
 import { compile } from "./parser/index";
 
 // this method is called when your extension is activated
@@ -32,30 +32,30 @@ export function activate(context: ExtensionContext) {
 
     const document = editor.document;
 
-    // do not parse min file
-    if (/\min\.js%/.test(document.fileName)) {
+    if (!SupportLanguagesMap[document.languageId]) {
       return;
     }
 
     const marks = await compile(document);
 
-    editor.setDecorations(
-      decorationType,
-      marks.map(v => {
-        return {
-          range: new Range(
-            editor.document.positionAt(v.location.start),
-            editor.document.positionAt(v.location.end)
-          ),
-          renderOptions: {
-            after: {
-              contentText: `@${v.version}`,
-              color: "#9e9e9e"
-            }
+    if (document.isClosed) {
+      return;
+    }
+
+    editor.setDecorations(decorationType, marks.map(v => {
+      return {
+        range: new Range(
+          editor.document.positionAt(v.location.start),
+          editor.document.positionAt(v.location.end)
+        ),
+        renderOptions: {
+          after: {
+            contentText: `@${v.version}`,
+            color: "#9e9e9e"
           }
-        };
-      }) as DecorationOptions[]
-    );
+        }
+      };
+    }) as DecorationOptions[]);
   }, 500);
 
   workspace.onDidChangeTextDocument(event => {
