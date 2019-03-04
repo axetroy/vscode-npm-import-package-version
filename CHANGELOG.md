@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.3.2...v0.4.0) (2019-03-04)
+
+
+### Performance Improvements
+
+* improve startup performance by more than 100 times. close [#10](https://github.com/axetroy/vscode-npm-import-package-version/issues/10) ([3b6711f](https://github.com/axetroy/vscode-npm-import-package-version/commit/3b6711f))
+
+
+
 ## [0.3.2](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.3.1...v0.3.2) (2019-03-04)
 
 
