@@ -1,3 +1,17 @@
+## [0.3.2](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.3.1...v0.3.2) (2019-03-04)
+
+
+### Features
+
+* support hashbang. close [#9](https://github.com/axetroy/vscode-npm-import-package-version/issues/9) ([fe576a3](https://github.com/axetroy/vscode-npm-import-package-version/commit/fe576a3))
+
+
+### Performance Improvements
+
+* improvie performance ([84cbf29](https://github.com/axetroy/vscode-npm-import-package-version/commit/84cbf29))
+
+
+
 ## [0.3.1](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.3.0...v0.3.1) (2019-03-02)
 
 
