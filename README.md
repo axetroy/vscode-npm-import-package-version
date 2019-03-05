@@ -12,7 +12,9 @@ An extension to show npm package's version in you code.
 
 ## Screen shot
 
-![Screen shot](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot.png)
+![js](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/js.png)
+![ts](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/ts.png)
+![vue](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/vue.png)
 
 ## Contributors
 

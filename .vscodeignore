@@ -6,5 +6,5 @@ src/**
 .gitignore
 tsconfig.json
 tslint.json
-screenshot.png
+screenshot/*
 *.log
