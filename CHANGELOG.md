@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.0...v0.4.1) (2019-03-05)
+
+
+### Features
+
+* support import require in typescript. close [#11](https://github.com/axetroy/vscode-npm-import-package-version/issues/11) ([becdd7a](https://github.com/axetroy/vscode-npm-import-package-version/commit/becdd7a))
+
+
+
 # [0.4.0](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.3.2...v0.4.0) (2019-03-04)
 
 
