@@ -72,7 +72,9 @@ export function activate(context: VSCODE.ExtensionContext) {
   );
 
   if (activeEditor) {
-    updateDecorators(activeEditor);
+    setTimeout(() => {
+      updateDecorators(activeEditor);
+    }, 0);
   }
 }
 
