@@ -10,7 +10,7 @@ An extension to show npm package's version in you code.
 
 ## [CHANGELOG](https://github.com/axetroy/vscode-npm-import-package-version/blob/master/CHANGELOG.md)
 
-## Screen shot
+## Screenshot
 
 ![js](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/js.png)
 ![ts](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/ts.png)
