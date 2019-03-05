@@ -43,6 +43,8 @@ export function compile(code: string, filepath: string): IMark[] {
   }
 
   const visitor: any = {
+    // require('xxx')
+    // import('xxx')
     CallExpression(p: any) {
       const node: BabelTypes.CallExpression = p.node;
       const callee = node.callee;
@@ -76,6 +78,9 @@ export function compile(code: string, filepath: string): IMark[] {
         }
       }
     },
+    // import * as from 'xx'
+    // import 'xx'
+    // import xx from 'xx'
     ImportDeclaration(p: any) {
       const node: BabelTypes.ImportDeclaration = p.node;
       const argv = node.source;

@@ -10,7 +10,7 @@ export function compile(code: string, filepath: string): IMark[] {
   try {
     // Parse a file
     sourceFile = ts.createSourceFile(
-      "test.ts",
+      filepath,
       code,
       ts.ScriptTarget.Latest,
       true,
@@ -25,6 +25,8 @@ export function compile(code: string, filepath: string): IMark[] {
 
     function delintNode(node: TS.Node) {
       switch (node.kind) {
+        // require('xxx')
+        // import('xxx')
         case ts.SyntaxKind.CallExpression:
           const expression = (node as TS.CallExpression).expression;
           const args = (node as TS.CallExpression).arguments;
@@ -55,6 +57,34 @@ export function compile(code: string, filepath: string): IMark[] {
             }
           }
           break;
+        // import ts = require('typescript')
+        case ts.SyntaxKind.ImportEqualsDeclaration:
+          const ref = (node as TS.ImportEqualsDeclaration)
+            .moduleReference as TS.ExternalModuleReference;
+
+          //
+          if (
+            ts.isStringLiteral(ref.expression) &&
+            isValidNpmPackageName(ref.expression.text)
+          ) {
+            const mark = createMark(
+              ref.expression.text,
+              filepath,
+              {
+                start: ref.expression.pos,
+                end: ref.expression.end - 1
+              },
+              "import"
+            );
+
+            if (mark) {
+              marks.push(mark);
+            }
+          }
+          break;
+        // import * as from 'xx'
+        // import 'xx'
+        // import xx from 'xx'
         case ts.SyntaxKind.ImportDeclaration:
           const spec = (node as TS.ImportDeclaration).moduleSpecifier;
           if (
