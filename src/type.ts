@@ -14,7 +14,6 @@ export interface IMark {
   name: string;
   version: string | null;
   buildIn: boolean;
-  method: "require" | "import";
 }
 
 export enum SupportLanguages {

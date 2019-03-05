@@ -69,8 +69,7 @@ export function isValidNpmPackageName(name: string): boolean {
 export function createMark(
   sourceName: string,
   filepath: string,
-  location: ILocation,
-  method: "require" | "import"
+  location: ILocation
 ): IMark | void {
   try {
     if (isBuildInModule(sourceName)) {
@@ -78,8 +77,7 @@ export function createMark(
         location,
         name: sourceName,
         version: getCurrentUsingNodeVersion(),
-        buildIn: true,
-        method
+        buildIn: true
       };
     } else {
       const packageNameParser = require("parse-package-name");
@@ -91,8 +89,7 @@ export function createMark(
           location,
           name: packageInfo.name,
           version: null,
-          buildIn: false,
-          method
+          buildIn: false
         };
       }
       const pkg = require(path.join(packagePath, "package.json"));
@@ -100,8 +97,7 @@ export function createMark(
         location,
         name: packageInfo.name,
         version: pkg.version,
-        buildIn: false,
-        method
+        buildIn: false
       };
     }
   } catch (err) {

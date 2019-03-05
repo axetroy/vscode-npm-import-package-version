@@ -42,6 +42,19 @@ export function compile(code: string, filepath: string): IMark[] {
     return [];
   }
 
+  function appendMark(node: BabelTypes.StringLiteral) {
+    if (!isValidNpmPackageName(node.value)) {
+      return;
+    }
+    const mark = createMark(node.value, filepath, {
+      start: node.start || 0,
+      end: (node.end || 0) - 1
+    });
+    if (mark) {
+      marks.push(mark);
+    }
+  }
+
   const visitor: any = {
     // require('xxx')
     // import('xxx')
@@ -59,22 +72,8 @@ export function compile(code: string, filepath: string): IMark[] {
 
         const argv = args[0];
 
-        if (
-          babelTypes.isStringLiteral(argv) &&
-          isValidNpmPackageName(argv.value)
-        ) {
-          const mark = createMark(
-            argv.value,
-            filepath,
-            {
-              start: argv.start || 0,
-              end: (argv.end || 0) - 1
-            },
-            (callee as any).name
-          );
-          if (mark) {
-            marks.push(mark);
-          }
+        if (babelTypes.isStringLiteral(argv)) {
+          appendMark(argv);
         }
       }
     },
@@ -83,24 +82,19 @@ export function compile(code: string, filepath: string): IMark[] {
     // import xx from 'xx'
     ImportDeclaration(p: any) {
       const node: BabelTypes.ImportDeclaration = p.node;
-      const argv = node.source;
-      if (
-        babelTypes.isStringLiteral(argv) &&
-        isValidNpmPackageName(argv.value)
-      ) {
-        const mark = createMark(
-          argv.value,
-          filepath,
-          {
-            start: argv.start || 0,
-            end: (argv.end || 0) - 1
-          },
-          "import"
-        );
-        if (mark) {
-          marks.push(mark);
-        }
+      appendMark(node.source);
+    },
+    // export { window } from "vscode";
+    ExportNamedDeclaration(p: any) {
+      const node: BabelTypes.ExportNamedDeclaration = p.node;
+      if (node.source) {
+        appendMark(node.source);
       }
+    },
+    // export * from "vscode";
+    ExportAllDeclaration(p: any) {
+      const node: BabelTypes.ExportAllDeclaration = p.node;
+      appendMark(node.source);
     }
   };
 

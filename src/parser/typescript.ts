@@ -24,6 +24,7 @@ export function compile(code: string, filepath: string): IMark[] {
     delintNode(SourceFile);
 
     function delintNode(node: TS.Node) {
+      let moduleNode: TS.LiteralLikeNode | null = null;
       switch (node.kind) {
         // require('xxx')
         // import('xxx')
@@ -36,24 +37,9 @@ export function compile(code: string, filepath: string): IMark[] {
             expression.kind === ts.SyntaxKind.ImportKeyword;
           if (isRequire || isDynamicImport) {
             const argv = args[0] as TS.StringLiteral;
-            if (
-              argv &&
-              ts.isStringLiteral(argv) &&
-              isValidNpmPackageName(argv.text)
-            ) {
-              const mark = createMark(
-                argv.text,
-                filepath,
-                {
-                  start: argv.pos,
-                  end: argv.end - 1
-                },
-                isRequire ? "require" : "import"
-              );
 
-              if (mark) {
-                marks.push(mark);
-              }
+            if (argv && ts.isStringLiteral(argv)) {
+              moduleNode = argv;
             }
           }
           break;
@@ -62,24 +48,8 @@ export function compile(code: string, filepath: string): IMark[] {
           const ref = (node as TS.ImportEqualsDeclaration)
             .moduleReference as TS.ExternalModuleReference;
 
-          //
-          if (
-            ts.isStringLiteral(ref.expression) &&
-            isValidNpmPackageName(ref.expression.text)
-          ) {
-            const mark = createMark(
-              ref.expression.text,
-              filepath,
-              {
-                start: ref.expression.pos,
-                end: ref.expression.end - 1
-              },
-              "import"
-            );
-
-            if (mark) {
-              marks.push(mark);
-            }
+          if (ts.isStringLiteral(ref.expression)) {
+            moduleNode = ref.expression;
           }
           break;
         // import * as from 'xx'
@@ -87,26 +57,28 @@ export function compile(code: string, filepath: string): IMark[] {
         // import xx from 'xx'
         case ts.SyntaxKind.ImportDeclaration:
           const spec = (node as TS.ImportDeclaration).moduleSpecifier;
-          if (
-            spec &&
-            ts.isStringLiteral(spec) &&
-            isValidNpmPackageName(spec.text)
-          ) {
-            const mark = createMark(
-              spec.text,
-              filepath,
-              {
-                start: spec.pos,
-                end: spec.end - 1
-              },
-              "import"
-            );
-
-            if (mark) {
-              marks.push(mark);
-            }
+          if (spec && ts.isStringLiteral(spec)) {
+            moduleNode = spec;
           }
           break;
+        // export { window } from "vscode";
+        // export * from "vscode";
+        case ts.SyntaxKind.ExportDeclaration:
+          const exportSpec = (node as TS.ExportDeclaration).moduleSpecifier;
+          if (exportSpec && ts.isStringLiteral(exportSpec)) {
+            moduleNode = exportSpec;
+          }
+          break;
+      }
+
+      if (moduleNode && isValidNpmPackageName(moduleNode.text)) {
+        const mark = createMark(moduleNode.text, filepath, {
+          start: moduleNode.pos,
+          end: moduleNode.end - 1
+        });
+        if (mark) {
+          marks.push(mark);
+        }
       }
 
       ts.forEachChild(node, delintNode);
