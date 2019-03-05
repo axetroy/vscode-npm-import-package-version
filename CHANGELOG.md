@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.1...v0.4.2) (2019-03-05)
+
+
+### Features
+
+* support export from for javascript and typescript. close [#13](https://github.com/axetroy/vscode-npm-import-package-version/issues/13) ([708c989](https://github.com/axetroy/vscode-npm-import-package-version/commit/708c989))
+
+
+
 ## [0.4.1](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.0...v0.4.1) (2019-03-05)
 
 
