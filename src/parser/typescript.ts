@@ -17,6 +17,7 @@ export function compile(code: string, filepath: string): IMark[] {
       ts.ScriptKind.TSX
     );
   } catch (err) {
+    // NOBUG: ignore error
     return [];
   }
 

@@ -25,7 +25,7 @@ export async function compile(document: vscode.TextDocument): Promise<IMark[]> {
     const stat = await fs.stat(filepath);
     fileSize = stat.size;
   } catch (err) {
-    // ignore error
+    // NOBUG: ignore error
     return [];
   }
 
@@ -33,8 +33,8 @@ export async function compile(document: vscode.TextDocument): Promise<IMark[]> {
   if (fileSize > 1024 * 1024 * 1) {
     return [];
   }
-  // less then 20 line and file size over 100KB
-  else if (document.lineCount < 20 && fileSize > 1024 * 100) {
+  // less then 20 line and file size over 50KB
+  else if (document.lineCount < 20 && fileSize > 1024 * 50) {
     return [];
   }
   // over 10000 line and file size over 10KB

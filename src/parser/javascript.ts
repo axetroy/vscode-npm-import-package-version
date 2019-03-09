@@ -39,6 +39,7 @@ export function compile(code: string, filepath: string): IMark[] {
       ]
     });
   } catch (err) {
+    // NOBUG: ignore error
     return [];
   }
 
