@@ -1,3 +1,17 @@
+## [0.4.3](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.2...v0.4.3) (2019-04-02)
+
+
+### Bug Fixes
+
+* issues that are not properly rendered in some cases ([171c887](https://github.com/axetroy/vscode-npm-import-package-version/commit/171c887))
+
+
+### Features
+
+* add an options to enable/disable extension ([8ce7c3d](https://github.com/axetroy/vscode-npm-import-package-version/commit/8ce7c3d))
+
+
+
 ## [0.4.2](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.1...v0.4.2) (2019-03-05)
 
 
@@ -132,6 +146,5 @@
 ### Bug Fixes
 
 * only run on javascript and typescript ([45ddc2e](https://github.com/axetroy/vscode-npm-import-package-version/commit/45ddc2e))
-
 
 
