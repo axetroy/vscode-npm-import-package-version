@@ -63,7 +63,7 @@ export function findPackage(packageName: string, cwd: string): string | void {
 }
 
 export function isValidNpmPackageName(name: string): boolean {
-  return /^(@[a-z]([\w\-_]+)?\/)?[a-z]([\w\-_\.]+)?$/i.test(name);
+  return /^(@[a-z]([\w\-_]+)?\/)?[a-z]([\w\-_\.\/]+)?$/i.test(name);
 }
 
 export function createMark(
