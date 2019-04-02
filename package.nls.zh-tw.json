@@ -1,0 +1,3 @@
+{
+  "npm-import-package-version.enable": "是否啟用該擴展。\n\n在 `Typescript/Javascript` 中顯示導入模塊版本。\n\n例如. `import typescript from \"typescript@3.3.3333\"`"
+}

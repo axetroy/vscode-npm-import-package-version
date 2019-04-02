@@ -1,0 +1,3 @@
+{
+  "npm-import-package-version.enable": "Wheather to enable extension.\n\nDisplay import modules version in `Typescript/Javascript`.\n\neg. `import typescript from \"typescript@3.3.3333\"`"
+}

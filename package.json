@@ -35,7 +35,18 @@
     "onLanguage:typescriptreact",
     "onLanguage:vue"
   ],
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "title": "Npm Import Package Version Configuration",
+      "properties": {
+        "npm-import-package-version.enable": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%npm-import-package-version.enable%"
+        }
+      }
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./ && npm run lint",

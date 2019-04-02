@@ -6,23 +6,49 @@ import VSCODE = require("vscode");
 import { SupportLanguagesMap } from "./type";
 import { compile } from "./parser/index";
 
+const configurationNamespace = "npm-import-package-version";
+const configurationFieldEnable = "enable";
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: VSCODE.ExtensionContext) {
   const vscode: typeof VSCODE = require("vscode");
   const debounce = require("lodash.debounce");
-
   const { workspace, window, Range, OverviewRulerLane } = vscode;
+  const configuration = vscode.workspace.getConfiguration(
+    configurationNamespace
+  );
+  let enable = !!configuration.get(configurationFieldEnable);
 
   const decorationType = window.createTextEditorDecorationType({
     overviewRulerLane: OverviewRulerLane.Right,
     after: { margin: "0 0 0 0rem" }
   });
 
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(e => {
+      const refreshConfigs = [
+        `${configurationNamespace}.${configurationFieldEnable}`
+      ];
+      for (const config of refreshConfigs) {
+        if (e.affectsConfiguration(config)) {
+          enable = !!vscode.workspace
+            .getConfiguration(configurationNamespace)
+            .get(configurationFieldEnable);
+        }
+      }
+    })
+  );
+
   let activeEditor = window.activeTextEditor;
 
   const updateDecorators = debounce(async (editor: VSCODE.TextEditor) => {
     if (!editor) {
+      return;
+    }
+
+    if (!enable) {
+      editor.setDecorations(decorationType, []);
       return;
     }
 
