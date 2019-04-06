@@ -28,4 +28,4 @@ An extension to show npm package's version in you code.
 
 ## License
 
-The [MIT License](https://github.com/axetroy/vscode-npm-import-package-version/blob/master/LICENSE)
+The [Anti 996 License](https://github.com/axetroy/vscode-npm-import-package-version/blob/master/LICENSE)
