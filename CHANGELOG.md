@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.3...v0.5.0) (2019-04-06)
+
+
+### Features
+
+* add hover message for decoration ([cdf088e](https://github.com/axetroy/vscode-npm-import-package-version/commit/cdf088e))
+
+
+
 ## [0.4.3](https://github.com/axetroy/vscode-npm-import-package-version/compare/v0.4.2...v0.4.3) (2019-04-02)
 
 
@@ -146,5 +155,6 @@
 ### Bug Fixes
 
 * only run on javascript and typescript ([45ddc2e](https://github.com/axetroy/vscode-npm-import-package-version/commit/45ddc2e))
+
 
 
