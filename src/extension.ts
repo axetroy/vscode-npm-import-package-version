@@ -2,7 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import VSCODE = require("vscode");
-
+import { init, localize } from "vscode-nls-i18n";
 import { SupportLanguagesMap } from "./type";
 import { compile } from "./parser/index";
 
@@ -12,6 +12,7 @@ const configurationFieldEnable = "enable";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: VSCODE.ExtensionContext) {
+  init(context);
   const vscode: typeof VSCODE = require("vscode");
   const debounce = require("lodash.debounce");
   const { workspace, window, Range, OverviewRulerLane } = vscode;
@@ -64,21 +65,62 @@ export function activate(context: VSCODE.ExtensionContext) {
       return;
     }
 
-    editor.setDecorations(decorationType, marks.map(v => {
-      return {
-        range: new Range(
-          editor.document.positionAt(v.location.start),
-          editor.document.positionAt(v.location.end)
-        ),
-        renderOptions: {
-          after: {
-            contentText: `@${v.version || "Not Installed"}`,
-            color: "#9e9e9e"
+    editor.setDecorations(
+      decorationType,
+      marks.map(v => {
+        const params = encodeURIComponent(
+          JSON.stringify({ name: v.name, packagePath: v.packagePath })
+        );
+        const hover = new vscode.MarkdownString();
+        hover.value = "";
+
+        hover.isTrusted = true;
+
+        if (v.description) {
+          hover.value += v.description;
+        }
+
+        if (!v.buildIn) {
+          if (!v.version) {
+            hover.value += localize("tip.not_installed_warning", v.name);
+          } else {
+            hover.value += `\n\n[${localize(
+              "cmd.open.title"
+            )}](command:npm-version._open?${params})`;
           }
         }
-      };
-    }) as VSCODE.DecorationOptions[]);
+
+        hover.value = hover.value.trim();
+
+        const target: VSCODE.DecorationOptions = {
+          range: new Range(
+            editor.document.positionAt(v.location.start),
+            editor.document.positionAt(v.location.end)
+          ),
+          hoverMessage: hover,
+          renderOptions: {
+            after: {
+              contentText: v.buildIn
+                ? ""
+                : `@${v.version || localize("tip.not_installed")}`,
+              color: "#9e9e9e"
+            }
+          }
+        };
+        return target;
+      })
+    );
   }, 500);
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "npm-version._open",
+      async ({ packagePath }) => {
+        const document = await vscode.workspace.openTextDocument(packagePath);
+        vscode.window.showTextDocument(document);
+      }
+    )
+  );
 
   context.subscriptions.push(
     workspace.onDidChangeTextDocument(event => {

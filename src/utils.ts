@@ -2,6 +2,7 @@ import * as path from "path";
 import { spawnSync } from "child_process";
 import fsExtra = require("fs-extra");
 import { IPackage, ILocation, IMark } from "./type";
+import { localize } from "vscode-nls-i18n";
 
 const builtinModules: string[] = [
   "assert",
@@ -76,6 +77,7 @@ export function createMark(
       return {
         location,
         name: sourceName,
+        description: localize("tip.node_build_in"),
         version: getCurrentUsingNodeVersion(),
         buildIn: true
       };
@@ -88,14 +90,19 @@ export function createMark(
         return {
           location,
           name: packageInfo.name,
+          description: "",
           version: null,
           buildIn: false
         };
       }
-      const pkg = require(path.join(packagePath, "package.json"));
+      // FIXME: Memory leak. cache will not be release. we should use `fs.readJsonSync` instead of ot
+      const packageFilePath = path.join(packagePath, "package.json");
+      const pkg = require(packageFilePath);
       return {
         location,
-        name: packageInfo.name,
+        name: pkg.name,
+        description: pkg.description || "",
+        packagePath: packageFilePath,
         version: pkg.version,
         buildIn: false
       };

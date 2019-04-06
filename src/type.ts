@@ -1,5 +1,6 @@
 export interface IPackage {
   name: string;
+  description?: string;
   path?: string;
   version?: string;
 }
@@ -10,8 +11,10 @@ export interface ILocation {
 }
 
 export interface IMark {
-  location: ILocation;
   name: string;
+  description?: string;
+  packagePath?: string;
+  location: ILocation;
   version: string | null;
   buildIn: boolean;
 }

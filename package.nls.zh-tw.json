@@ -1,3 +1,7 @@
 {
-  "npm-import-package-version.enable": "是否啟用該擴展。\n\n在 `Typescript/Javascript` 中顯示導入模塊版本。\n\n例如. `import typescript from \"typescript@3.3.3333\"`"
+  "npm-import-package-version.enable": "是否啟用該擴展。\n\n在 `Typescript/Javascript` 中顯示導入模塊版本。\n\n例如. `import typescript from \"typescript@3.3.3333\"`",
+  "cmd.open.title": "打開 package.json",
+  "tip.node_build_in": "`Nodejs` 內置模塊。",
+  "tip.not_installed": "未安装",
+  "tip.not_installed_warning": "\n\n未安裝該依賴包.\n\n嘗試運行命令 `npm install {0}` 或 `yarn add {0}` 進行安裝。"
 }
