@@ -1,6 +1,8 @@
 {
   "npm-import-package-version.enable": "是否启用该扩展。\n\n在 `Typescript/Javascript` 中显示导入模块版本。\n\n例如. `import typescript from \"typescript@3.3.3333\"`",
   "cmd.open.title": "打开 package.json",
+  "cmd.enable.title": "启用 NPM 导入版本显示",
+  "cmd.disable.title": "禁用 NPM 导入版本显示",
   "tip.node_build_in": "`Nodejs` 内置模块。",
   "tip.not_installed": "未安装",
   "tip.not_installed_warning": "\n\n未安装该依赖包.\n\n尝试运行命令 `npm install {0}` 或 `yarn add {0}` 进行安装。"

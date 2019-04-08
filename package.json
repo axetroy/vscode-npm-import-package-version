@@ -33,13 +33,26 @@
     "onLanguage:javascriptreact",
     "onLanguage:typescript",
     "onLanguage:typescriptreact",
-    "onLanguage:vue"
+    "onLanguage:vue",
+    "onCommand:npm-version.enable",
+    "onCommand:npm-version.disable"
   ],
   "contributes": {
     "commands": [
       {
         "command": "npm-version._open",
-        "title": "%cmd.open.title%"
+        "title": "%cmd.open.title%",
+        "category": "Npm Import Version"
+      },
+      {
+        "command": "npm-version.enable",
+        "title": "%cmd.enable.title%",
+        "category": "Npm Import Version"
+      },
+      {
+        "command": "npm-version.disable",
+        "title": "%cmd.disable.title%",
+        "category": "Npm Import Version"
       }
     ],
     "menus": {

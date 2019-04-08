@@ -1,6 +1,8 @@
 {
   "npm-import-package-version.enable": "Wheather to enable extension.\n\nDisplay import modules version in `Typescript/Javascript`.\n\neg. `import typescript from \"typescript@3.3.3333\"`",
   "cmd.open.title": "Open package.json",
+  "cmd.enable.title": "Enable npm import version",
+  "cmd.disable.title": "Disable npm import version",
   "tip.node_build_in": "`Nodejs` build-in module.",
   "tip.not_installed": "Not Installed",
   "tip.not_installed_warning": "\n\nThis package is not installed.\n\ntry run command `npm install {0}` or `yarn add {0}` to install it."

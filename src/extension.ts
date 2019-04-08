@@ -35,7 +35,8 @@ export function activate(context: VSCODE.ExtensionContext) {
         if (e.affectsConfiguration(config)) {
           enable = !!vscode.workspace
             .getConfiguration(configurationNamespace)
-            .get(configurationFieldEnable);
+            .get(configurationFieldEnable, vscode.ConfigurationTarget.Global);
+          updateDecorators(activeEditor);
         }
       }
     })
@@ -43,7 +44,9 @@ export function activate(context: VSCODE.ExtensionContext) {
 
   let activeEditor = window.activeTextEditor;
 
-  const updateDecorators = debounce(async (editor: VSCODE.TextEditor) => {
+  const updateDecorators: (
+    editor: VSCODE.TextEditor | void
+  ) => Promise<void> = debounce(async (editor: VSCODE.TextEditor) => {
     if (!editor) {
       return;
     }
@@ -120,6 +123,35 @@ export function activate(context: VSCODE.ExtensionContext) {
         vscode.window.showTextDocument(document);
       }
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("npm-version.enable", async () => {
+      await vscode.workspace
+        .getConfiguration(configurationNamespace)
+        .update(
+          configurationFieldEnable,
+          true,
+          vscode.ConfigurationTarget.Global
+        );
+      enable = true;
+      await updateDecorators(activeEditor);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("npm-version.disable", async () => {
+      await vscode.workspace
+        .getConfiguration(configurationNamespace)
+        .update(
+          configurationFieldEnable,
+          false,
+          vscode.ConfigurationTarget.Global
+        );
+
+      enable = false;
+      await updateDecorators(activeEditor);
+    })
   );
 
   context.subscriptions.push(
