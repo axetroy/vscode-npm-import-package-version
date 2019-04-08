@@ -9,3 +9,4 @@ tslint.json
 screenshot/*
 *.log
 .travis.yml
+renovate.json
