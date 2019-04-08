@@ -8,3 +8,4 @@ tsconfig.json
 tslint.json
 screenshot/*
 *.log
+.travis.yml
