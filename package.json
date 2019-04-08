@@ -85,13 +85,13 @@
     "publish": "npx vsce publish"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.5",
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^11.10.4",
-    "conventional-changelog-cli": "^2.0.12",
-    "tslint": "^5.13.1",
-    "tslint-config-prettier": "^1.18.0",
-    "vscode": "^1.1.30"
+    "@types/fs-extra": "5.0.5",
+    "@types/mocha": "5.2.6",
+    "@types/node": "11.13.0",
+    "conventional-changelog-cli": "2.0.12",
+    "tslint": "5.15.0",
+    "tslint-config-prettier": "1.18.0",
+    "vscode": "1.1.33"
   },
   "dependencies": {
     "@babel/parser": "^7.3.4",
