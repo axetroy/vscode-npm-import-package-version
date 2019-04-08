@@ -9,6 +9,10 @@ import { compile } from "./parser/index";
 const configurationNamespace = "npm-import-package-version";
 const configurationFieldEnable = "enable";
 
+enum Commands {
+  openPackageJson = "npm-version._open"
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: VSCODE.ExtensionContext) {
@@ -87,9 +91,9 @@ export function activate(context: VSCODE.ExtensionContext) {
           if (!v.version) {
             hover.value += localize("tip.not_installed_warning", v.name);
           } else {
-            hover.value += `\n\n[${localize(
-              "cmd.open.title"
-            )}](command:npm-version._open?${params})`;
+            hover.value += `\n\n[${localize("cmd.open.title")}](command:${
+              Commands.openPackageJson
+            }?${params})`;
           }
         }
 
@@ -117,7 +121,7 @@ export function activate(context: VSCODE.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "npm-version._open",
+      Commands.openPackageJson,
       async ({ packagePath }) => {
         const document = await vscode.workspace.openTextDocument(packagePath);
         vscode.window.showTextDocument(document);
