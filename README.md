@@ -22,15 +22,15 @@ An extension to show npm package's version in you code.
 ![ts](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/ts.png)
 ![vue](https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/vue.png)
 
-## Contributors
+### 捐赠我
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+如果你觉得这个项目能帮助到你，可以考虑 **支付宝扫码(或搜索 511118132)领红包** 支持我
 
-| [<img src="https://avatars1.githubusercontent.com/u/9758711?v=3" width="100px;"/><br /><sub>Axetroy</sub>](http://axetroy.github.io)<br />[💻](https://github.com/axetroy/vscode-npm-import-package-version/commits?author=axetroy) 🔌 [⚠️](https://github.com/axetroy/vscode-npm-import-package-version/commits?author=axetroy) [🐛](https://github.com/axetroy/vscode-npm-import-package-version/issues?q=author%3Aaxetroy) 🎨 |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+甚至可以请我喝一杯 ☕️
 
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+| 微信                                                                                                     | 支付宝                                                                                                   | 支付宝红包                                                                                                   |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| <img src="https://github.com/axetroy/blog/raw/master/public/donate/wechat.png" width="200" height="200"> | <img src="https://github.com/axetroy/blog/raw/master/public/donate/alipay.png" width="200" height="200"> | <img src="https://github.com/axetroy/blog/raw/master/public/donate/alipay-red.png" width="200" height="200"> |
 
 ## License
 
