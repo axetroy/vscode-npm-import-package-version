@@ -94,15 +94,15 @@
     "vscode": "1.1.33"
   },
   "dependencies": {
-    "@babel/parser": "^7.3.4",
-    "@babel/traverse": "^7.3.4",
-    "@babel/types": "^7.3.4",
+    "@babel/parser": "^7.4.3",
+    "@babel/traverse": "^7.4.3",
+    "@babel/types": "^7.4.0",
     "@vue/component-compiler-utils": "^3.0.0",
     "fs-extra": "^7.0.1",
     "lodash.debounce": "^4.0.8",
     "parse-package-name": "^0.1.0",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.4.3",
     "vscode-nls-i18n": "^0.1.1",
-    "vue-template-compiler": "^2.6.8"
+    "vue-template-compiler": "^2.6.10"
   }
 }
