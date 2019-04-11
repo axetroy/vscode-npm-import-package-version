@@ -97,7 +97,7 @@
     "@babel/parser": "^7.3.4",
     "@babel/traverse": "^7.3.4",
     "@babel/types": "^7.3.4",
-    "@vue/component-compiler-utils": "^2.6.0",
+    "@vue/component-compiler-utils": "^3.0.0",
     "fs-extra": "^7.0.1",
     "lodash.debounce": "^4.0.8",
     "parse-package-name": "^0.1.0",
