@@ -89,7 +89,7 @@
     "@types/mocha": "5.2.6",
     "@types/node": "11.13.19",
     "conventional-changelog-cli": "2.0.23",
-    "tslint": "5.16.0",
+    "tslint": "5.19.0",
     "tslint-config-prettier": "1.18.0",
     "vscode": "1.1.33"
   },
