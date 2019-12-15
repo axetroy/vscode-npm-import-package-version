@@ -87,7 +87,7 @@
   "devDependencies": {
     "@types/fs-extra": "8.0.1",
     "@types/mocha": "5.2.7",
-    "@types/node": "11.15.2",
+    "@types/node": "11.15.3",
     "conventional-changelog-cli": "2.0.28",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
