@@ -17,3 +17,4 @@ renovate.json
 **/*.txt
 **/typing
 **/.DS_Store
+**/*.vsix
