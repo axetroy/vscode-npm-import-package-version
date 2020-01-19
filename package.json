@@ -5,7 +5,7 @@
   "version": "0.6.1",
   "publisher": "axetroy",
   "engines": {
-    "vscode": "^1.21.0"
+    "vscode": "^1.40.0"
   },
   "repository": {
     "type": "git",
@@ -27,8 +27,9 @@
     "Other"
   ],
   "icon": "resources/icon.png",
-  "main": "./out/extension",
+  "main": "./client/out/extension.js",
   "activationEvents": [
+    "onLanguage:plaintext",
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
     "onLanguage:typescript",
@@ -76,33 +77,22 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./ && npm run lint",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "postinstall": "node ./node_modules/vscode/bin/install && cd client && yarn && cd ../server && yarn && cd ..",
     "lint": "tslint -p ./ -c tslint.json",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "publish": "npx vsce publish"
+    "changelog": "npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "publish": "npx vsce publish",
+    "pack": "npx vsce package"
   },
   "devDependencies": {
-    "@types/fs-extra": "8.0.1",
-    "@types/mocha": "5.2.7",
-    "@types/node": "11.15.4",
-    "conventional-changelog-cli": "2.0.31",
-    "tslint": "5.20.1",
+    "@types/fs-extra": "^8.0.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.1.8",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "1.18.0",
-    "vscode": "1.1.36"
-  },
-  "dependencies": {
-    "@babel/parser": "^7.4.3",
-    "@babel/traverse": "^7.4.3",
-    "@babel/types": "^7.4.0",
-    "@vue/component-compiler-utils": "^3.0.0",
-    "fs-extra": "^8.0.0",
-    "lodash.debounce": "^4.0.8",
-    "parse-package-name": "^0.1.0",
-    "typescript": "^3.4.3",
-    "vscode-nls-i18n": "^0.1.1",
-    "vue-template-compiler": "^2.6.10"
+    "typescript": "^3.7.5",
+    "vscode": "^1.1.36"
   }
 }

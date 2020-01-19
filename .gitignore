@@ -5,3 +5,6 @@ node_modules
 *.lock
 package-lock.json
 *.log
+.vsix
+.DS_Store
+dist

@@ -85,14 +85,14 @@ export function compile(code: string, filepath: string): IMark[] {
       const node: BabelTypes.ImportDeclaration = p.node;
       appendMark(node.source);
     },
-    // export { window } from "vscode";
+    // export { window } from "xxx";
     ExportNamedDeclaration(p: any) {
       const node: BabelTypes.ExportNamedDeclaration = p.node;
       if (node.source) {
         appendMark(node.source);
       }
     },
-    // export * from "vscode";
+    // export * from "xxx";
     ExportAllDeclaration(p: any) {
       const node: BabelTypes.ExportAllDeclaration = p.node;
       appendMark(node.source);
