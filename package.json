@@ -2,7 +2,7 @@
   "name": "vscode-npm-import-package-version",
   "displayName": "npm-import-package-version",
   "description": "An extension to show npm package's version in you code.",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "publisher": "axetroy",
   "engines": {
     "vscode": "^1.40.0"
