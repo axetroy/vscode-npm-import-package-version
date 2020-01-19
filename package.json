@@ -87,12 +87,12 @@
     "pack": "npx vsce package"
   },
   "devDependencies": {
-    "@types/fs-extra": "^8.0.1",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^13.1.8",
-    "tslint": "^5.20.1",
+    "@types/fs-extra": "8.0.1",
+    "@types/mocha": "5.2.7",
+    "@types/node": "13.1.8",
+    "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
-    "typescript": "^3.7.5",
-    "vscode": "^1.1.36"
+    "typescript": "3.7.5",
+    "vscode": "1.1.36"
   }
 }
