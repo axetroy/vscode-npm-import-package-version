@@ -3,7 +3,6 @@
 out/test/**
 **/*_test.js
 **/*.map
-**/src
 .gitignore
 **/tsconfig*
 **/tslint.json
