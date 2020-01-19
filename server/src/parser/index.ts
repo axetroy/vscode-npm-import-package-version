@@ -1,40 +1,35 @@
-import fsExtra = require("fs-extra");
-import vscode = require("vscode");
+import { TextDocument } from "vscode-languageserver-textdocument";
 import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 import { compile as VueCompiler } from "./vue";
-
 import { IMark, SupportLanguages } from "../type";
+
+const oneMByte = 1024 * 1024 * 1;
 
 /**
  * compile the code and return marks
  * @param document
  */
-export async function compile(document: vscode.TextDocument): Promise<IMark[]> {
-  const fs: typeof fsExtra = require("fs-extra");
-  const filepath = document.fileName;
+export async function compile(document: TextDocument): Promise<IMark[]> {
+  const filepath = require("file-uri-to-path")(document.uri);
   const fileText = document.getText();
   // do not parse min file
   if (/.*\.\min\.js$/.test(filepath)) {
     return [];
   }
 
-  let fileSize = 0;
-
-  try {
-    const stat = await fs.stat(filepath);
-    fileSize = stat.size;
-  } catch (err) {
-    // NOBUG: ignore error
+  if (fileText.length > oneMByte) {
     return [];
   }
+
+  let fileSize = Buffer.from(fileText).length;
 
   // do not parse file which over 1M
-  if (fileSize > 1024 * 1024 * 1) {
+  if (fileSize > oneMByte) {
     return [];
   }
-  // less then 20 line and file size over 50KB
-  else if (document.lineCount < 20 && fileSize > 1024 * 50) {
+  // less then 50 line and file size over 50KB
+  else if (document.lineCount < 50 && fileSize > 1024 * 50) {
     return [];
   }
   // over 10000 line and file size over 10KB

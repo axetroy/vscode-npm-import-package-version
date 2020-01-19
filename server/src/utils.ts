@@ -1,8 +1,7 @@
 import * as path from "path";
 import { spawnSync } from "child_process";
-import fsExtra = require("fs-extra");
+import { readdirSync, readJSONSync } from "fs-extra";
 import { IPackage, ILocation, IMark } from "./type";
-import { localize } from "vscode-nls-i18n";
 
 const builtinModules: string[] = [
   "assert",
@@ -55,8 +54,7 @@ export function findPackage(packageName: string, cwd: string): string | void {
   }
   const packagePath: string = path.join(cwd, "node_modules", packageName);
   try {
-    const fs: typeof fsExtra = require("fs-extra");
-    fs.readdirSync(packagePath);
+    readdirSync(packagePath);
     return packagePath;
   } catch (err) {
     return findPackage(packageName, path.dirname(cwd));
@@ -77,7 +75,7 @@ export function createMark(
       return {
         location,
         name: sourceName,
-        description: localize("tip.node_build_in"),
+        description: "",
         version: getCurrentUsingNodeVersion(),
         buildIn: true
       };
@@ -95,9 +93,8 @@ export function createMark(
           buildIn: false
         };
       }
-      // FIXME: Memory leak. cache will not be release. we should use `fs.readJsonSync` instead of ot
       const packageFilePath = path.join(packagePath, "package.json");
-      const pkg = require(packageFilePath);
+      const pkg = readJSONSync(packageFilePath);
       return {
         location,
         name: pkg.name,
@@ -108,6 +105,7 @@ export function createMark(
       };
     }
   } catch (err) {
+    console.error(err);
     return;
   }
 }
