@@ -7,7 +7,8 @@ import {
   MarkdownString,
   DecorationOptions,
   Range,
-  commands
+  commands,
+  ConfigurationTarget
 } from "vscode";
 import {
   LanguageClient,
@@ -22,8 +23,12 @@ enum Commands {
   openPackageJson = "npm-version._open"
 }
 
+const configurationNamespace = "npm-import-package-version";
+const configurationFieldEnable = "enable";
+
 export async function activate(context: ExtensionContext) {
   await init(context);
+
   // The server is implemented in node
   const serverModule = context.asAbsolutePath(
     path.join("server", "out", "server.js")
@@ -46,14 +51,14 @@ export async function activate(context: ExtensionContext) {
   const clientOptions: LanguageClientOptions = {
     // Register the server for plain text documents
     documentSelector: [
-      { language: "javascript" },
-      { language: "javascriptreact" },
-      { language: "typescript" },
-      { language: "typescriptreact" },
-      { language: "vue" }
+      { scheme: "file", language: "javascript" },
+      { scheme: "file", language: "javascriptreact" },
+      { scheme: "file", language: "typescript" },
+      { scheme: "file", language: "typescriptreact" },
+      { scheme: "file", language: "vue" }
     ],
     synchronize: {
-      configurationSection: "npm-version"
+      configurationSection: configurationNamespace
     }
   };
 
@@ -133,8 +138,6 @@ export async function activate(context: ExtensionContext) {
     );
   });
 
-  const disposable = client.start();
-
   context.subscriptions.push(
     commands.registerCommand(
       Commands.openPackageJson,
@@ -151,7 +154,23 @@ export async function activate(context: ExtensionContext) {
     })
   );
 
+  context.subscriptions.push(
+    commands.registerCommand("npm-version.enable", async () => {
+      await workspace
+        .getConfiguration(configurationNamespace)
+        .update(configurationFieldEnable, true, ConfigurationTarget.Global);
+    })
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand("npm-version.disable", async () => {
+      await workspace
+        .getConfiguration(configurationNamespace)
+        .update(configurationFieldEnable, false, ConfigurationTarget.Global);
+    })
+  );
+
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(client.start());
 }

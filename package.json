@@ -29,7 +29,6 @@
   "icon": "resources/icon.png",
   "main": "./client/out/extension.js",
   "activationEvents": [
-    "onLanguage:plaintext",
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
     "onLanguage:typescript",
@@ -79,8 +78,9 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -b",
     "watch": "tsc -b -w",
-    "postinstall": "node ./node_modules/vscode/bin/install && cd client && yarn && cd ../server && yarn && cd ..",
+    "postinstall": "npm run installvscode && cd client && yarn && cd ../server && yarn && cd ..",
     "lint": "tslint -p ./ -c tslint.json",
+    "installvscode": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
     "changelog": "npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "publish": "npx vsce publish",

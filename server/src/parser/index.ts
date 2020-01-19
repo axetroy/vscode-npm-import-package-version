@@ -22,7 +22,7 @@ export async function compile(document: TextDocument): Promise<IMark[]> {
     return [];
   }
 
-  let fileSize = Buffer.from(fileText).length;
+  const fileSize = Buffer.from(fileText).length;
 
   // do not parse file which over 1M
   if (fileSize > oneMByte) {
