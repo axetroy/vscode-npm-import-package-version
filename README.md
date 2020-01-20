@@ -6,7 +6,7 @@
 
 # vscode-npm-import-package-version
 
-An extension to show npm package's version in you code.
+An extension to show the npm package's version in your code.
 
 ## Features
 
