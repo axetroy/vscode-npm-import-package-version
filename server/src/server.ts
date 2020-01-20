@@ -12,6 +12,8 @@ import { compile } from "./parser";
 
 const configurationNamespace = "npm-import-package-version";
 
+process.title = "Npm Import Package Version Server"
+
 // The example settings
 interface ISettings {
   enable: boolean;
@@ -40,11 +42,18 @@ connection.onInitialize(
         name: "Npm Version Server"
       },
       capabilities: {
-        textDocumentSync: TextDocumentSyncKind.Full
+        textDocumentSync: {
+          openClose: true,
+          change: TextDocumentSyncKind.Full
+        }
       }
     };
   }
 );
+
+connection.onInitialized(() => {
+  connection.console.log("server start");
+});
 
 function compileDocument(document: TextDocument) {
   if (!globalSettings.enable) {

@@ -85,7 +85,7 @@ export async function activate(context: ExtensionContext) {
           return;
         }
 
-        if (editor.document.uri.toString() !== uri) {
+        if (editor?.document.uri.toString() !== uri) {
           return;
         }
 
@@ -118,8 +118,8 @@ export async function activate(context: ExtensionContext) {
 
             const target: DecorationOptions = {
               range: new Range(
-                editor.document.positionAt(v.location.start),
-                editor.document.positionAt(v.location.end)
+                editor?.document.positionAt(v.location.start),
+                editor?.document.positionAt(v.location.end)
               ),
               hoverMessage: hover,
               renderOptions: {
@@ -136,6 +136,12 @@ export async function activate(context: ExtensionContext) {
         );
       }
     );
+
+    context.subscriptions.push(
+      window.onDidChangeActiveTextEditor(editor => {
+        client.sendNotification("compile", editor?.document.uri.toString());
+      })
+    );
   });
 
   context.subscriptions.push(
@@ -146,12 +152,6 @@ export async function activate(context: ExtensionContext) {
         window.showTextDocument(document);
       }
     )
-  );
-
-  context.subscriptions.push(
-    window.onDidChangeActiveTextEditor(editor => {
-      client.sendNotification("compile", editor.document.uri.toString());
-    })
   );
 
   context.subscriptions.push(
