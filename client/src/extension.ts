@@ -85,7 +85,7 @@ export async function activate(context: ExtensionContext) {
           return;
         }
 
-        if (editor?.document.uri.toString() !== uri) {
+        if (editor.document.uri.toString() !== uri) {
           return;
         }
 
