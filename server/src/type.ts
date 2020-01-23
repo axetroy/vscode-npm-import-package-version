@@ -26,4 +26,3 @@ export enum SupportLanguages {
   tsx = "typescriptreact",
   vue = "vue"
 }
-

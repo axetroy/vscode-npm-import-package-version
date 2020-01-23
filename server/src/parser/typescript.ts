@@ -1,4 +1,4 @@
-import * as ts from "typescript"
+import * as ts from "typescript";
 import { IMark } from "../type";
 import { createMark, isValidNpmPackageName } from "../utils";
 
@@ -31,9 +31,11 @@ export function compile(code: string, filepath: string): IMark[] {
           const expression = (node as ts.CallExpression).expression;
           const args = (node as ts.CallExpression).arguments;
           const isRequire =
-            ts.isIdentifier(expression) && expression.text === "require";
+            expression &&
+            ts.isIdentifier(expression) &&
+            expression.text === "require";
           const isDynamicImport =
-            expression.kind === ts.SyntaxKind.ImportKeyword;
+            expression?.kind === ts.SyntaxKind.ImportKeyword;
           if (isRequire || isDynamicImport) {
             const argv = args[0] as ts.StringLiteral;
 
@@ -47,7 +49,7 @@ export function compile(code: string, filepath: string): IMark[] {
           const ref = (node as ts.ImportEqualsDeclaration)
             .moduleReference as ts.ExternalModuleReference;
 
-          if (ts.isStringLiteral(ref.expression)) {
+          if (ref.expression && ts.isStringLiteral(ref.expression)) {
             moduleNode = ref.expression;
           }
           break;

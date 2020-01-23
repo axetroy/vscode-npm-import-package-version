@@ -12,7 +12,7 @@ import { compile } from "./parser";
 
 const configurationNamespace = "npm-import-package-version";
 
-process.title = "Npm Import Package Version Server"
+process.title = "Npm Import Package Version Server";
 
 // The example settings
 interface ISettings {

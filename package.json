@@ -16,16 +16,8 @@
     "url": "https://github.com/axetroy/vscode-npm-import-package-version/issues"
   },
   "homepage": "https://github.com/axetroy/vscode-npm-import-package-version#readme",
-  "keywords": [
-    "javascript",
-    "typescript",
-    "version",
-    "npm",
-    "package"
-  ],
-  "categories": [
-    "Other"
-  ],
+  "keywords": ["javascript", "typescript", "version", "npm", "package"],
+  "categories": ["Other"],
   "icon": "resources/icon.png",
   "main": "./client/out/extension.js",
   "activationEvents": [
