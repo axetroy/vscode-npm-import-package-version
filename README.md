@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.com/axetroy/vscode-npm-import-package-version.svg?branch=master)](https://travis-ci.com/axetroy/vscode-npm-import-package-version)
 [![Version](https://vsmarketplacebadge.apphb.com/version/axetroy.vscode-npm-import-package-version.svg)](https://marketplace.visualstudio.com/items?itemName=axetroy.vscode-npm-import-package-version)
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads/axetroy.vscode-npm-import-package-version.svg)](https://marketplace.visualstudio.com/items?itemName=axetroy.vscode-npm-import-package-version)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
