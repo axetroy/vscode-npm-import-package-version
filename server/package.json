@@ -4,7 +4,7 @@
     "@babel/traverse": "7.8.6",
     "@vue/component-compiler-utils": "3.1.1",
     "file-uri-to-path": "2.0.0",
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.0",
     "parse-package-name": "0.1.0",
     "typescript": "3.8.3",
     "vscode-languageserver": "6.1.1",
