@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@babel/parser": "7.9.0",
+    "@babel/parser": "7.9.2",
     "@babel/traverse": "7.9.0",
     "@vue/component-compiler-utils": "3.1.1",
     "file-uri-to-path": "2.0.0",
