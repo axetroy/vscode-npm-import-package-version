@@ -90,7 +90,7 @@
     "@types/fs-extra": "8.1.0",
     "@types/mocha": "7.0.2",
     "@types/node": "13.13.4",
-    "tslint": "6.1.1",
+    "tslint": "6.1.2",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.8.3",
     "vscode": "1.1.37"
