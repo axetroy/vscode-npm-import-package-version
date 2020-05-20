@@ -89,7 +89,7 @@
   "devDependencies": {
     "@types/fs-extra": "9.0.0",
     "@types/mocha": "7.0.2",
-    "@types/node": "13.13.6",
+    "@types/node": "13.13.8",
     "tslint": "6.1.2",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.9.3",
