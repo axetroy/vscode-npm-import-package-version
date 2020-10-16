@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@babel/parser": "7.11.5",
-    "@babel/traverse": "7.11.5",
+    "@babel/parser": "7.12.2",
+    "@babel/traverse": "7.12.1",
     "@vue/component-compiler-utils": "3.2.0",
     "file-uri-to-path": "2.0.0",
     "fs-extra": "9.0.1",
