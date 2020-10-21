@@ -35,7 +35,7 @@ jobs:
         run: |
           npx vsce package -o ./vscode-npm-import-package-version.vsix
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         if: runner.os == 'linux'
         with:
           name: package
