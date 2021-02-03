@@ -16,12 +16,11 @@ export async function compile(document: TextDocument): Promise<IMark[]> {
   let filepath = fileURLToPath(document.uri);
 
   if (os.platform() === "win32") {
-    filepath = filepath.replace(
-      /^\/([a-z])(.*)/,
-      (_, p1: string, p2: string) => {
+    filepath = filepath
+      .replace(/^\/([a-z])(.*)/, (_, p1: string, p2: string) => {
         return p1.toUpperCase() + p2;
-      }
-    );
+      })
+      .replace(/\//g, "\\");
   }
 
   const fileText = document.getText();
