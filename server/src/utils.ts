@@ -1,7 +1,6 @@
-import * as path from "path";
 import { spawnSync } from "child_process";
 import { builtinModules } from "module";
-import { readdirSync, readJSONSync } from "fs-extra";
+import { readJSONSync } from "fs-extra";
 import * as resolvePackagePath from "resolve-package-path";
 import { IPackage, ILocation, IMark } from "./type";
 
