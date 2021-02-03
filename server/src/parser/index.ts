@@ -1,7 +1,6 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { fileURLToPath } from "url";
 import * as os from "os";
-import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 import { compile as VueCompiler } from "./vue";
 import { IMark, SupportLanguages } from "../type";
@@ -51,7 +50,6 @@ export async function compile(document: TextDocument): Promise<IMark[]> {
   switch (document.languageId) {
     case SupportLanguages.js:
     case SupportLanguages.jsx:
-      return JavascriptCompiler(fileText, filepath);
     case SupportLanguages.ts:
     case SupportLanguages.tsx:
       return TypescriptCompiler(fileText, filepath);

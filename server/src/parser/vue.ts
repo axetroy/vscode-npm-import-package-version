@@ -1,6 +1,5 @@
 import Vue = require("@vue/component-compiler-utils");
 import { IMark } from "../type";
-import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 
 export function compile(code: string, filepath: string): IMark[] {
@@ -64,11 +63,13 @@ export function compile(code: string, filepath: string): IMark[] {
   switch (lang) {
     case "typescript":
     case "ts":
+    case "tsx":
+    case "javascript":
+    case "js":
+    case "jsx":
       marks = TypescriptCompiler(content, filepath);
       break;
     default:
-      // default is javascript
-      marks = JavascriptCompiler(content, filepath);
   }
 
   return marks.map(v => {
