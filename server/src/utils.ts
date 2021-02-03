@@ -6,7 +6,13 @@ import { IPackage, ILocation, IMark } from "./type";
 
 export function isBuildInModule(moduleName: string): boolean {
   const moduleSet = new Set(builtinModules);
-  return moduleSet.has(moduleName);
+  const isBuildIn = moduleSet.has(moduleName);
+
+  if (isBuildIn) {
+    return true;
+  }
+
+  return builtinModules.some(v => moduleName.startsWith(v + "/"));
 }
 
 export function findPackage(packageName: string, cwd: string): string | null {
