@@ -1,5 +1,6 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { fileURLToPath } from "url";
+import * as os from "os";
 import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 import { compile as VueCompiler } from "./vue";
@@ -12,7 +13,17 @@ const oneMByte = 1024 * 1024 * 1;
  * @param document
  */
 export async function compile(document: TextDocument): Promise<IMark[]> {
-  const filepath = fileURLToPath(document.uri);
+  let filepath = fileURLToPath(document.uri);
+
+  if (os.platform() === "win32") {
+    filepath = filepath.replace(
+      /^\/([a-z])(.*)/,
+      (_, p1: string, p2: string) => {
+        return p1.toUpperCase() + p2;
+      }
+    );
+  }
+
   const fileText = document.getText();
   // do not parse min file
   if (/.*\.\min\.js$/.test(filepath)) {
