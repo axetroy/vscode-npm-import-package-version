@@ -1,64 +1,17 @@
 import * as path from "path";
 import { spawnSync } from "child_process";
+import { builtinModules } from "module";
 import { readdirSync, readJSONSync } from "fs-extra";
+import * as resolvePackagePath from "resolve-package-path";
 import { IPackage, ILocation, IMark } from "./type";
-
-const builtinModules: string[] = [
-  "assert",
-  "async_hooks",
-  "buffer",
-  "child_process",
-  "cluster",
-  "console",
-  "constants",
-  "crypto",
-  "dgram",
-  "dns",
-  "domain",
-  "events",
-  "fs",
-  "http",
-  "http2",
-  "https",
-  "inspector",
-  "module",
-  "net",
-  "os",
-  "path",
-  "perf_hooks",
-  "process",
-  "punycode",
-  "querystring",
-  "readline",
-  "repl",
-  "stream",
-  "string_decoder",
-  "timers",
-  "tls",
-  "tty",
-  "url",
-  "util",
-  "v8",
-  "vm",
-  "zlib"
-];
 
 export function isBuildInModule(moduleName: string): boolean {
   const moduleSet = new Set(builtinModules);
   return moduleSet.has(moduleName);
 }
 
-export function findPackage(packageName: string, cwd: string): string | void {
-  if (cwd === "/" || !cwd) {
-    return void 0;
-  }
-  const packagePath: string = path.join(cwd, "node_modules", packageName);
-  try {
-    readdirSync(packagePath);
-    return packagePath;
-  } catch (err) {
-    return findPackage(packageName, path.dirname(cwd));
-  }
+export function findPackage(packageName: string, cwd: string): string | null {
+  return resolvePackagePath(packageName, cwd);
 }
 
 export function isValidNpmPackageName(name: string): boolean {
@@ -83,8 +36,8 @@ export function createMark(
       const packageNameParser = require("parse-package-name");
       const packageInfo: IPackage = packageNameParser(sourceName);
 
-      const packagePath = findPackage(packageInfo.name, filepath);
-      if (!packagePath) {
+      const packageJSONPath = findPackage(packageInfo.name, filepath);
+      if (!packageJSONPath) {
         return {
           location,
           name: packageInfo.name,
@@ -93,13 +46,12 @@ export function createMark(
           buildIn: false
         };
       }
-      const packageFilePath = path.join(packagePath, "package.json");
-      const pkg = readJSONSync(packageFilePath);
+      const pkg = readJSONSync(packageJSONPath);
       return {
         location,
         name: pkg.name,
         description: pkg.description || "",
-        packagePath: packageFilePath,
+        packagePath: packageJSONPath,
         version: pkg.version,
         buildIn: false
       };

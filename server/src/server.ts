@@ -1,20 +1,23 @@
 import {
-  IPCMessageReader,
-  IPCMessageWriter,
   createConnection,
-  IConnection,
   TextDocuments,
   InitializeResult,
-  TextDocumentSyncKind
-} from "vscode-languageserver";
+  TextDocumentSyncKind,
+  ProposedFeatures
+} from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { compile } from "./parser";
+import * as workerpool from "workerpool";
+import { IMark } from "./type";
 
 const configurationNamespace = "npm-import-package-version";
 
 process.title = "Npm Import Package Version Server";
 
-// The example settings
+// create a worker pool using an external worker script
+const pool = workerpool.pool(__dirname + "/worker.js", {
+  minWorkers: 1
+});
+
 interface ISettings {
   enable: boolean;
 }
@@ -26,10 +29,7 @@ const defaultSettings: ISettings = { enable: true };
 let globalSettings: ISettings = defaultSettings;
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
-const connection: IConnection = createConnection(
-  new IPCMessageReader(process),
-  new IPCMessageWriter(process)
-);
+const connection = createConnection(ProposedFeatures.all);
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only
@@ -60,16 +60,26 @@ function compileDocument(document: TextDocument) {
     return;
   }
   connection.console.log(`compile: ${document.uri}`);
-  compile(document)
-    .then(decorators => {
+  pool
+    .exec("parse", [
+      document.uri,
+      document.languageId,
+      document.version,
+      document.getText()
+    ])
+    .then(function(decorators: IMark[]) {
       connection.sendNotification("decorators", {
         uri: document.uri,
         marks: decorators
       });
     })
-    .catch(err => {
-      connection.console.error(err.message);
-      connection.console.error(err.stack);
+    .catch(function(err: any) {
+      if (err instanceof Error) {
+        connection.console.error(err.message);
+        err.stack && connection.console.error(err.stack);
+      } else {
+        connection.console.error(JSON.stringify(err));
+      }
     });
 }
 
@@ -102,14 +112,15 @@ documents.onDidChangeContent(change => {
   compileDocument(change.document);
 });
 
-connection.onNotification((method, ...params) => {
+connection.onNotification((method, params) => {
   switch (method) {
     case "compile":
-      const uri: string = params[0];
-      const document = documents.get(uri);
+      const target = params as { uri: string };
+      const document = documents.get(target.uri);
       if (document) {
         compileDocument(document);
       }
+
       break;
   }
 });
@@ -120,3 +131,7 @@ documents.listen(connection);
 
 // Listen on the connection
 connection.listen();
+
+connection.onExit(() => {
+  pool.terminate();
+});

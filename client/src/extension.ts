@@ -1,33 +1,35 @@
 import * as path from "path";
 import {
-  workspace,
-  ExtensionContext,
-  window,
-  OverviewRulerLane,
-  MarkdownString,
-  DecorationOptions,
-  Range,
   commands,
-  ConfigurationTarget
+  ConfigurationTarget,
+  DecorationOptions,
+  ExtensionContext,
+  MarkdownString,
+  OverviewRulerLane,
+  Range,
+  window,
+  workspace,
 } from "vscode";
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
-  TransportKind
-} from "vscode-languageclient";
+  TransportKind,
+} from "vscode-languageclient/node";
 import { init, localize } from "vscode-nls-i18n";
 import { IMark } from "./type";
 
 enum Commands {
-  openPackageJson = "npm-version._open"
+  openPackageJson = "npm-version._open",
 }
 
 const configurationNamespace = "npm-import-package-version";
 const configurationFieldEnable = "enable";
 
+let client: LanguageClient;
+
 export async function activate(context: ExtensionContext) {
-  await init(context);
+  await init(context.extensionPath);
 
   // The server is implemented in node
   const serverModule = context.asAbsolutePath(
@@ -43,8 +45,8 @@ export async function activate(context: ExtensionContext) {
     debug: {
       module: serverModule,
       transport: TransportKind.ipc,
-      options: debugOptions
-    }
+      options: debugOptions,
+    },
   };
 
   // Options to control the language client
@@ -55,24 +57,28 @@ export async function activate(context: ExtensionContext) {
       { scheme: "file", language: "javascriptreact" },
       { scheme: "file", language: "typescript" },
       { scheme: "file", language: "typescriptreact" },
-      { scheme: "file", language: "vue" }
+      { scheme: "file", language: "vue" },
     ],
     synchronize: {
-      configurationSection: configurationNamespace
-    }
+      configurationSection: configurationNamespace,
+    },
+    progressOnInitialization: true,
+    stdioEncoding: "utf8",
   };
 
   // Create the language client and start the client.
-  const client = new LanguageClient(
+  client = new LanguageClient(
     "npm_import_version_server",
     "Npm Import Version Server",
     serverOptions,
     clientOptions
   );
 
+  client.registerProposedFeatures();
+
   const decorationType = window.createTextEditorDecorationType({
     overviewRulerLane: OverviewRulerLane.Right,
-    after: { margin: "0 0 0 0rem" }
+    after: { margin: "0 0 0 0rem" },
   });
 
   client.onReady().then(() => {
@@ -91,7 +97,7 @@ export async function activate(context: ExtensionContext) {
 
         editor.setDecorations(
           decorationType,
-          marks.map(v => {
+          marks.map((v) => {
             const params = encodeURIComponent(
               JSON.stringify({ name: v.name, packagePath: v.packagePath })
             );
@@ -127,9 +133,9 @@ export async function activate(context: ExtensionContext) {
                   contentText: v.buildIn
                     ? ""
                     : `@${v.version || localize("tip.not_installed")}`,
-                  color: "#9e9e9e"
-                }
-              }
+                  color: "#9e9e9e",
+                },
+              },
             };
             return target;
           })
@@ -138,8 +144,10 @@ export async function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(
-      window.onDidChangeActiveTextEditor(editor => {
-        client.sendNotification("compile", editor?.document.uri.toString());
+      window.onDidChangeActiveTextEditor((editor) => {
+        client.sendNotification("compile", {
+          uri: editor?.document.uri.toString(),
+        });
       })
     );
   });
@@ -173,4 +181,8 @@ export async function activate(context: ExtensionContext) {
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
   context.subscriptions.push(client.start());
+}
+
+export function deactivate() {
+  client && client.stop();
 }
