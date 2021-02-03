@@ -1,4 +1,5 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
+import { fileURLToPath } from "url";
 import { compile as JavascriptCompiler } from "./javascript";
 import { compile as TypescriptCompiler } from "./typescript";
 import { compile as VueCompiler } from "./vue";
@@ -11,7 +12,7 @@ const oneMByte = 1024 * 1024 * 1;
  * @param document
  */
 export async function compile(document: TextDocument): Promise<IMark[]> {
-  const filepath = require("file-uri-to-path")(document.uri);
+  const filepath = fileURLToPath(document.uri);
   const fileText = document.getText();
   // do not parse min file
   if (/.*\.\min\.js$/.test(filepath)) {

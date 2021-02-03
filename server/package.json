@@ -3,7 +3,6 @@
     "@babel/parser": "^7.12.14",
     "@babel/traverse": "^7.12.13",
     "@vue/component-compiler-utils": "3.2.0",
-    "file-uri-to-path": "2.0.0",
     "fs-extra": "^9.1.0",
     "parse-package-name": "0.1.0",
     "resolve-package-path": "^3.1.0",
