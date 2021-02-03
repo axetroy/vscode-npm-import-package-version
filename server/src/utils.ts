@@ -10,7 +10,7 @@ export function isBuildInModule(moduleName: string): boolean {
 }
 
 export function findPackage(packageName: string, cwd: string): string | null {
-  return resolvePackagePath(packageName, cwd);
+  return resolvePackagePath(packageName, cwd, false);
 }
 
 export function isValidNpmPackageName(name: string): boolean {
