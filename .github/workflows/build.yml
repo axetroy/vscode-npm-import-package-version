@@ -58,7 +58,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           files: |
-            ./package/vscode-npm-import-package-version.vsix
+            ./vscode-npm-import-package-version.vsix
           draft: false
 
       - uses: actions/setup-node@v1
