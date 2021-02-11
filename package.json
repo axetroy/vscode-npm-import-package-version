@@ -87,7 +87,7 @@
     "pack": "npx vsce package"
   },
   "devDependencies": {
-    "@types/fs-extra": "9.0.6",
+    "@types/fs-extra": "9.0.7",
     "@types/mocha": "8.2.0",
     "@types/node": "14.14.25",
     "@types/workerpool": "6.0.0",
