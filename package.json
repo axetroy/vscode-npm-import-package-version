@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.7",
-    "@types/mocha": "8.2.0",
+    "@types/mocha": "8.2.1",
     "@types/node": "14.14.28",
     "@types/workerpool": "6.0.0",
     "tslint": "6.1.3",
