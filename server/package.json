@@ -8,6 +8,6 @@
     "vscode-languageserver": "7.0.0",
     "vscode-languageserver-textdocument": "1.0.1",
     "vue-template-compiler": "2.6.12",
-    "workerpool": "6.1.3"
+    "workerpool": "6.1.4"
   }
 }
