@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "vscode-languageclient": "7.0.0",
-    "vscode-nls-i18n": "0.2.2"
+    "vscode-nls-i18n": "0.2.3"
   }
 }
