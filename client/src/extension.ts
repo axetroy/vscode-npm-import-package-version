@@ -4,6 +4,7 @@ import {
   ConfigurationTarget,
   DecorationOptions,
   ExtensionContext,
+  Hover,
   MarkdownString,
   OverviewRulerLane,
   Range,
@@ -81,65 +82,101 @@ export async function activate(context: ExtensionContext) {
     after: { margin: "0 0 0 0rem" },
   });
 
+  const tsExpectedSpinupTime = 700;
+  let isFirstInit = true;
+
   client.onReady().then(() => {
     client.onNotification(
       "decorators",
-      ({ uri, marks }: { uri: string; marks: IMark[] }) => {
+      async ({ uri, marks }: { uri: string; marks: IMark[] }) => {
         const editor = window.activeTextEditor;
 
         if (!editor) {
           return;
         }
 
-        if (editor.document.uri.toString() !== uri) {
+        const { document } = editor ?? {};
+        if (document.uri.toString() !== uri) {
           return;
         }
 
-        editor.setDecorations(
-          decorationType,
-          marks.map((v) => {
-            const params = encodeURIComponent(
-              JSON.stringify({ name: v.name, packagePath: v.packagePath })
-            );
-            const hover = new MarkdownString();
-            hover.value = "";
+        const resolvedDecorations: DecorationOptions[] = [];
+        const resolveDecoration = (decoration: DecorationOptions) => {
+          resolvedDecorations.push(decoration);
+          editor.setDecorations(decorationType, resolvedDecorations);
+        };
 
-            hover.isTrusted = true;
+        for (const v of marks) {
+          const params = encodeURIComponent(
+            JSON.stringify({ name: v.name, packagePath: v.packagePath })
+          );
+          const hover = new MarkdownString();
+          hover.value = "";
 
-            if (v.description) {
-              hover.value += v.description;
-            }
+          hover.isTrusted = true;
 
-            if (!v.buildIn) {
-              if (!v.version) {
-                hover.value += localize("tip.not_installed_warning", v.name);
-              } else {
-                hover.value += `\n\n[${localize("cmd.open.title")}](command:${
-                  Commands.openPackageJson
-                }?${params})`;
-              }
-            }
+          if (v.description) {
+            hover.value += v.description;
+          }
 
-            hover.value = hover.value.trim();
-
-            const target: DecorationOptions = {
-              range: new Range(
-                editor?.document.positionAt(v.location.start),
-                editor?.document.positionAt(v.location.end)
-              ),
-              hoverMessage: hover,
-              renderOptions: {
-                after: {
-                  contentText: v.buildIn
-                    ? ""
-                    : `@${v.version || localize("tip.not_installed")}`,
-                  color: "#9e9e9e",
-                },
-              },
+          let shouldBeIgnored = v.buildIn;
+          if (!v.version) {
+            const getHovers = async () => {
+              const hovers: Hover[] = await commands.executeCommand(
+                "vscode.executeHoverProvider",
+                document.uri,
+                document.positionAt(v.location.end)
+              );
+              return hovers;
             };
-            return target;
-          })
-        );
+            let hovers = await getHovers();
+            if (isFirstInit && hovers.length === 0) {
+              await new Promise((resolve) => {
+                setTimeout(resolve, tsExpectedSpinupTime);
+              });
+              hovers = await getHovers();
+              isFirstInit = false;
+            }
+            if (
+              hovers.some(
+                (hover) =>
+                  typeof hover.contents[0] === "object" &&
+                  hover.contents[0].value
+                    .trim()
+                    .startsWith('```typescript\nmodule "')
+              )
+            ) {
+              shouldBeIgnored = true;
+            }
+          }
+          if (!shouldBeIgnored) {
+            if (!v.version) {
+              hover.value += localize("tip.not_installed_warning", v.name);
+            } else {
+              hover.value += `\n\n[${localize("cmd.open.title")}](command:${
+                Commands.openPackageJson
+              }?${params})`;
+            }
+          }
+
+          hover.value = hover.value.trim();
+
+          resolveDecoration({
+            range: new Range(
+              document.positionAt(v.location.start),
+              document.positionAt(v.location.end)
+            ),
+            hoverMessage: hover,
+            renderOptions: {
+              after: {
+                contentText: shouldBeIgnored
+                  ? ""
+                  : `@${v.version || localize("tip.not_installed")}`,
+                color: "#9e9e9e",
+              },
+            },
+          });
+        }
       }
     );
 
